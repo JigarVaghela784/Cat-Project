@@ -5,7 +5,7 @@ import Search from "./Search/Search";
 import Data from "../newApi";
 const Navigation = () => {
   return <div className={style.Header}>
-  <Data/>
+  {/* <Data/> */}
   </div>;
 };
 

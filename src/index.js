@@ -4,12 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css';
+import { Provider } from "react-redux";
+import { applyMiddleware, compose, createStore } from 'redux';
+import reducer from './store/reducer';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+
+const composeEnhancers =window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__|| compose;
+const store=createStore(
+  reducer,
+  composeEnhancers(applyMiddleware(thunk,logger))
+)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={store}>
   <React.StrictMode>
-    <App />
+  <App />
   </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

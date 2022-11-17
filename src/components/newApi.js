@@ -8,7 +8,7 @@ const Data = () => {
   const [apireq, setApireq] = useState();
   const requestApi = async () => {
     const header = {
-      "Content-Type": "application.json",
+      "Content-Type": "image/jpg",
       "x-api-key": apiKey,
     };
 
