@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Cat_Image from "./Main";
 import VanillaTilt from "vanilla-tilt";
-
 import { Avatar, Card } from "antd";
 import Favourite from "./Favourite/Favourite";
+import styles from "./ImageCard.module.css";
 import Like from "./Like/Like";
 const { Meta } = Card;
 
@@ -26,16 +26,24 @@ const ImageCard = ({ element }) => {
   };
   return (
     <div>
-      <Tilt className="box" options={options}>
-        <Card style={{ width: 330 }} cover={<img src={element.url} />}>
-      
-          <Favourite/>
-          <Like/>
-          <Meta
-            // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-            title={element.id}
-            // description="This is the description"
-          />
+      <Tilt
+        style={{ boxShadow: "2px 10px 24px" }}
+        className="box"
+        options={options}
+      >
+        <Card
+          className={styles.mainContainer}
+          cover={<img src={element.url} />}
+        >
+          <div className={styles.favourite}>
+            <Favourite element={element} />
+          </div>
+          <div className={styles.detailWrapper}>
+            <div>{element.id}</div>
+            <div>
+              <Like element={element} />
+            </div>
+          </div>
         </Card>
       </Tilt>
     </div>

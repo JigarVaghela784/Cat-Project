@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DropDown from "../Header/DropDown/DropDown";
-import Search from "../Header/Search/Search";
+import Search from "../Header/Search/SearchField";
 // import Upload from "../Header/Upload/Upload";
 import style from "./Cat_image.module.css";
 import ImageCard from "./ImageCard";

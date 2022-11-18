@@ -17,22 +17,10 @@
   grid-gap: 30px;
   place-items: center;
 }
-/* .ImgDiv div img{
-    transition: 1s ease;
-} */
 
 .ImgDiv  img {
   width: 330px;
   height: 220px;
-  border: 5px solid white;
-  /* box-shadow: 8px 13px 26px black; */
   border-radius: 8px;
 
 }
-
-/* .ImgDiv div img:hover{
-    -webkit-transform: rotateZ(-10deg);
-    -ms-transform: rotateZ(-10deg);
-    transform: rotateZ(-10deg);
-    transition: 1s ease;
-} */
