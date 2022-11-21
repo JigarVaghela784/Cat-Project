@@ -1,43 +1,39 @@
-import React from 'react'
-import style from "./Search.module.css";
-import { AudioOutlined } from '@ant-design/icons';
-import { Input, Space } from 'antd';
-import axios from 'axios';
+import React, { useState } from "react";
+import { AudioOutlined } from "@ant-design/icons";
+import { Input, Space } from "antd";
 const { Search } = Input;
 const suffix = (
   <AudioOutlined
     style={{
       fontSize: 16,
-      color: '#1890ff',
+      color: "#1890ff",
     }}
   />
 );
-// const onSearch = (value) => console.log(value);
 const SearchField = () => {
-
-const onSearch=async()=>{
-  const id='vzVaSkJ6Q' 
-  try{
-    const response=await axios.get(`https://api.thecatapi.com/v1/images/search?category_ids=${id}`)
-    console.log('response', response)
-  }catch(error){
-    console.log('error', error)
-  }
-}
-
+  // const [filterTxt, setFilterTxt] = useState("");
+  // var filteredData = [];
+  // const onSearch = (e) => {
+  //   let val = e.target.value;
+  //   setFilterTxt(val);
+  //   console.log("set", val);
+  // };
+  // filteredData = cat?.filter((element) => {
+  //   return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
+  // });
   return (
-    <Space direction="vertical">
-    <Search
-      placeholder="input search text"
-      onSearch={onSearch}
-      style={{
-        width: 200,
-      }}
-    />
-   
-  </Space>
-);
-
-}
-
-export default SearchField
+    <div>
+      {/* <input type="text" placeholder='search...' onChange={e=>setSearchImage(e.target.value)} /> */}
+      {/* <Space direction="vertical">
+        <Search
+          placeholder="input search text"
+          // onChange={onSearch}
+          style={{
+            width: 200,
+          }}
+        />
+      </Space> */}
+    </div>
+  );
+};
+export default SearchField;

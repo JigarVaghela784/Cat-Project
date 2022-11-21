@@ -25,31 +25,38 @@ function Tilt(props) {
   return <div ref={tilt} {...rest} />;
 }
 
-const ImageCard = ({ element }) => {
+const ImageCard = ({ element}) => {
   const [isLike, setIsLiked] = useState(false);
-  const [isHeart, setIsHeart] = useState(true);
+  const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
-  const dispatch= useDispatch()
+  const [favourite, setFavourite] = useState([]);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.favourite.data);
+  const lData = useSelector((state) => state.like.data);
+  const favouriteData = useSelector((state) => state.favourite.data);
   const onLikePost = async () => {
-    console.log("element123456", element);
     setIsLiked(true);
-    dispatch(likeImage(element,likeData))
+    dispatch(likeImage(element, likeData));
+    setLikeData(lData)
   };
+  console.log('likeData', likeData)
   const onUnLikePost = async () => {
     setIsLiked(false);
-    dispatch(unlikeImage(element,likeData))
-   };
-  const dispacth = useDispatch();
-  const onFavouriteData = async () => {
-    setIsHeart(false);
-    dispacth(favouriteImage(element));
+    dispatch(unlikeImage(element, likeData));
   };
-  const data = useSelector((state) => state.favourite.data);
-  const onUnFavouriteData = async () => {
-    setIsHeart(true);
-    let favourite_id = data.data.id;
-    dispacth(unfavouriteImage(favourite_id));
-  };
+    const onFavouriteData = async () => {
+      setIsHeart(true);
+      dispatch(favouriteImage(element));
+    };
+
+    const onUnFavouriteData = async () => {
+      setIsHeart(false);
+      let favourite_id = data?.data?.id;
+      dispatch(unfavouriteImage(favourite_id));
+    };
+    console.log('lData', lData)
+
+  // console.log("likeData", likeData);
   const options = {
     scale: 1,
     speed: 10000,
@@ -74,9 +81,9 @@ const ImageCard = ({ element }) => {
                     fontSize: "20px",
                     padding: "7px",
                     borderRadius: "50px",
-                    color: "#fff",
+                    color: "#f44336",
                   }}
-                  onClick={onFavouriteData}
+                  onClick={onUnFavouriteData}
                 />
               ) : (
                 <HeartFilled
@@ -84,9 +91,9 @@ const ImageCard = ({ element }) => {
                     fontSize: "20px",
                     padding: "7px",
                     borderRadius: "50px",
-                    color: "#f44336",
+                    color: "#ddd",
                   }}
-                  onClick={onUnFavouriteData}
+                  onClick={onFavouriteData}
                 />
               )}
             </div>
@@ -94,36 +101,36 @@ const ImageCard = ({ element }) => {
           <div className={styles.detailWrapper}>
             <div>{element.id}</div>
             <div>
-            <div className={styles.likeWrapper}>
-      <div>
-        {isLike ? (
-          <LikeFilled
-            style={{
-              fontSize: "18px",
-              padding: "5px",
-              borderRadius: "50px",
-              color: "#fff",
-              backgroundColor: "#1890FF",
-              transition: "0.2s",
-            }}
-            onClick={onUnLikePost}
-          />
-        ) : (
-          <LikeFilled
-            style={{
-              fontSize: "18px",
-              padding: "5px",
-              borderRadius: "50px",
-              color: "#fff",
-              backgroundColor: "lightgrey",
-            }}
-            onClick={onLikePost}
-          />
-        )}
-      </div>
+              <div className={styles.likeWrapper}>
+                <div>
+                  {isLike ? (
+                    <LikeFilled
+                      style={{
+                        fontSize: "18px",
+                        padding: "5px",
+                        borderRadius: "50px",
+                        color: "#fff",
+                        backgroundColor: "#1890FF",
+                        transition: "0.2s",
+                      }}
+                      onClick={onUnLikePost}
+                    />
+                  ) : (
+                    <LikeFilled
+                      style={{
+                        fontSize: "18px",
+                        padding: "5px",
+                        borderRadius: "50px",
+                        color: "#fff",
+                        backgroundColor: "lightgrey",
+                      }}
+                      onClick={onLikePost}
+                    />
+                  )}
+                </div>
 
-      <div>{likeData}</div>
-    </div>
+                <div>{likeData}</div>
+              </div>
             </div>
           </div>
         </Card>

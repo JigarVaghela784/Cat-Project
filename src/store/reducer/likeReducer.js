@@ -1,11 +1,11 @@
 import * as actionType from '../action/actionType'
 
 const initialState={
-    data:null,
+    data:0,
     error:null,
     loading:false
 }
-
+console.log('data',initialState.data)
 const reducer=(state=initialState,action)=>{
     switch (action.type) {
         case actionType.LIKE_IMAGE_START:
@@ -21,6 +21,7 @@ const reducer=(state=initialState,action)=>{
                 loading:false,
             }
         case actionType.LIKE_IMAGE_SUCCESS:
+            console.log('action.data123456', action.data)
             return{
                 ...state,
                 data:action.data,

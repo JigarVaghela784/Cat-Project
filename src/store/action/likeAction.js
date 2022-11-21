@@ -1,5 +1,6 @@
 import { notification } from "antd";
 import axios from "axios";
+import { useState } from "react";
 import * as actionTypes from "./actionType";
 
 export const likeImageStart=()=>{
@@ -8,20 +9,22 @@ export const likeImageStart=()=>{
     }
 }
 
-export const likeImageSucces=(data)=>{
+export const likeImageSuccess=(data)=>{
+    console.log('data123456', data)
     return{
-        type:actionTypes.LIKE_IMAGE_START,
+        type:actionTypes.LIKE_IMAGE_SUCCESS,
         data:data
     }
 }
 export const likeImageFail=(error)=>{
     return{
-        type:actionTypes.LIKE_IMAGE_START,
+        type:actionTypes.LIKE_IMAGE_FAIL,
         error:error
     }
 }
 
 export const likeImage=(element,likeData)=>{
+    console.log('likeDataReducer', likeData)
     return async (dispatch)=>{
         dispatch(likeImageStart)
         try {
@@ -39,8 +42,7 @@ export const likeImage=(element,likeData)=>{
             notification["success"]({
                 message: "Image Liked Successfully!!",
               });
-            dispatch(likeImageSucces(response.data.value))
-            // setLikeData(response.data.value);
+            dispatch(likeImageSuccess(response.data.value))
             console.log("response", response.data.value);
           } catch (error) {
             notification["error"]({

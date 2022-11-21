@@ -1,26 +1,46 @@
-  // import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-  // import axios from "axios";
-  // import React, { useEffect, useState } from "react";
-  // import { useDispatch, useSelector } from "react-redux";
-  // import { favouriteImage, unfavouriteImage } from "../../../store/action/favouriteAction";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import style from "../Cat_image.module.css";
+import ImageCard from "../ImageCard";
+import { connect } from "react-redux";
+import Navigation from "../../Header/Header";
 
-  // const Favourite = ({ element }) => {
-  //   console.log("element", element);
-  //   const [isHeart, setIsHeart] = useState(true);
-  //   const dispacth=useDispatch()
-  //   const onFavouriteData = async () => {
-  //     setIsHeart(false);
-  //     dispacth(favouriteImage(element))
-  //   };
-  //   const data=useSelector(state=>state.favourite.data)
-  //   const onUnFavouriteData = async () => {
-  //     setIsHeart(true);
-  //     let favourite_id = data.data.id;
-  //     dispacth(unfavouriteImage(favourite_id))
-  //   };
-  //   return (
+const Cat_Image = ({ data}) => {
+  console.log("data======================", data);
+  const [cat, setCat] = useState([]);
+  console.log("cat", cat);
+  
+  const favouriteImage = async () => {
+    try {
+      axios.defaults.headers.common["x-api-key"] =
+        "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
+      const response = await axios.get(
+        "https://api.thecatapi.com/v1/favourites",{sub_id:"user_153"}
+      );
+      setCat(cat?.concat(response.data))
+      if(response.status===200){
+        // setIsHeart(true)
+      }
+      console.log("response1111111112222222222", response.status);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  
+  useEffect(() => {
+    favouriteImage();
+  }, []);
+  return (
+    <div>
+      <Navigation/>
+      <div className={style.ImgDiv}>
+        {cat?.map((el) => {
+      console.log('cat13234564789', el.image)
+          return <ImageCard key={el.image.id} element={el.image}/>;
+        })}
+      </div>
+    </div>
+  );
+};
 
-  //   );
-  // };
-
-  // export default Favourite;
+export default Cat_Image;

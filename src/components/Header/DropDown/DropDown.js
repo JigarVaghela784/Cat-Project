@@ -4,20 +4,16 @@ import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
 const items = [
   {
-    label: <a href="https://www.antgroup.com">Favourite Image</a>,
+    label: <a href="/">All</a>,
     key: "0",
   },
   {
-    label: <a href="https://www.aliyun.com">Unfavourite Image</a>,
+    label: <a href="/favourite">Favourite Image</a>,
     key: "1",
   },
   {
-    label: "Liked Image",
-    key: "3",
-  },
-  {
-    label: "UnLiked Image",
-    key: "4",
+    label: <a href="/unfavourite">Unfavourite Image</a>,
+    key: "2",
   },
 ];
 const DropDown = () => {
@@ -28,9 +24,9 @@ const DropDown = () => {
       }}
       trigger={["click"]}
     >
-      <a onClick={(e) => e.preventDefault()}>
+      <a href="/" onClick={(e) => e.preventDefault()}>
         <Space>
-          Click me
+          All
           <DownOutlined />
         </Space>
       </a>
