@@ -11,13 +11,14 @@ import FavouriteReducer from "./store/reducer/favouriteReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import likeReducer from "./store/reducer/likeReducer";
+import { BrowserRouter } from "react-router-dom";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   upload: uploadReducer,
   favourite: FavouriteReducer,
-  like:likeReducer
+  like: likeReducer,
 });
 
 const store = createStore(
@@ -28,10 +29,12 @@ const store = createStore(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
+      <BrowserRouter>
+      {/* <React.StrictMode> */}
       <App />
-    </React.StrictMode>
-  </Provider>
+      {/* </React.StrictMode> */}
+   </BrowserRouter>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

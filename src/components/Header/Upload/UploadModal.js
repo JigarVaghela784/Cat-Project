@@ -5,9 +5,11 @@ import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadImage } from "../../../store/action/uploadAction";
+import Loading from "../../Main/Loading/Loading";
+import { useNavigate } from "react-router-dom";
 const { Dragger } = Upload;
-const UploadModal = ({ open, setOpen, onSubmitData}) => {
-
+const UploadModal = ({ open, setOpen, onSubmitData }) => {
+  const [lastImage, setlastImage] = useState([])
   const apiKey =
     "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
 
@@ -15,30 +17,41 @@ const UploadModal = ({ open, setOpen, onSubmitData}) => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state?.upload.error);
   const handleChange = (event) => {
-    console.log("event.target.file", event.target.files[0]);
+    const imageUniqueId =(event.target.files[0].lastModified);
+    setlastImage(lastImage?.push(imageUniqueId))
+    console.log('imageUniqueId  ', imageUniqueId)
     setImage(event.target.files[0]);
     console.log("image1234", image);
     // dispatch(uploadImage(image));
     // onUploadImage(image);
   };
-let uploadImage;
-  const handleClick = async() =>{
-    dispatch(uploadImage(image));
-    // onSubmitData()
-  } 
-
+  let navigate=useNavigate()
+  console.log('lastImage', lastImage)
+  const handleClick = async () => {
+    await dispatch(uploadImage(image));
+    navigate('/')
+    setOpen(false);
+  };
+  const loading = useSelector((state) => state.upload.loading);
+  let nmodal = null;
+  if (loading) {
+    console.log("loading1234", loading);
+    nmodal = <Loading />;
+  } else {
+    nmodal = <input type="file" onChange={handleChange} />;
+  }
   return (
     <>
       <Modal
         title="Modal 1000px width"
         centered
         open={open}
-        onOk={() =>onSubmitData()}
+        onOk={() => handleClick()}
         onCancel={() => setOpen(false)}
         width={750}
       >
-        <input type="file" onChange={handleChange} />
-        <button onClick={handleClick}>Upload</button>
+        {nmodal}
+        {/* <button onClick={handleClick}>Upload</button> */}
       </Modal>
     </>
   );
