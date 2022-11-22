@@ -23,16 +23,16 @@ export const likeImageFail=(error)=>{
     }
 }
 
-export const likeImage=(element,likeData)=>{
-    console.log('likeDataReducer', likeData)
+export const likeImage=(element,)=>{
     return async (dispatch)=>{
         dispatch(likeImageStart)
         try {
             const payLoad = {
               image_id: element.id,
-              sub_id: "user_1",
-              value: likeData + 1,
+              sub_id: "user_123",
+              value: 1,
             };
+            console.log('element.id', element.id)
             axios.defaults.headers.common["x-api-key"] =
               "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
             const response = await axios.post(
@@ -42,8 +42,9 @@ export const likeImage=(element,likeData)=>{
             notification["success"]({
                 message: "Image Liked Successfully!!",
               });
-            dispatch(likeImageSuccess(response.data.value))
-            console.log("response", response.data.value);
+
+            // dispatch(likeImageSuccess(response.data.value))
+            console.log("response", response.data);
           } catch (error) {
             notification["error"]({
                 message: error.response.data,
@@ -73,14 +74,14 @@ export const unlikeImageFail=(error)=>{
     }
 }
 
-export const unlikeImage=(element,likeData)=>{
+export const unlikeImage=(element)=>{
     return async (dispatch)=>{
         dispatch(unlikeImageStart)
         try {
                 const payLoad = {
         image_id: element.id,
         sub_id: "user_1",
-        value: likeData - 1,
+        value:0,
       };
             axios.defaults.headers.common["x-api-key"] =
               "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
@@ -91,8 +92,8 @@ export const unlikeImage=(element,likeData)=>{
             notification["success"]({
                 message: "Image Unliked Successfully!!",
               });
-            dispatch(unlikeImageSucces(response.data.value))
-            console.log("response", response.data.value);
+            // dispatch(unlikeImageSucces(response.data.value))
+            console.log("response", response.data);
           } catch (error) {
             notification["error"]({
                 message: error.response.data,

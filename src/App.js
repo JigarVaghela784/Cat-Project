@@ -6,20 +6,45 @@ import Favourite from "./components/Main/Favourite/Favourite";
 import Like from "./components/Main/Like/Like";
 import Unfavourite from "./components/Main/Unfavourite/Unfavourite";
 import { useState } from "react";
+import Navigation from "./components/Header/Header";
 
 function App() {
-  // const [isHeart, setIsHeart] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [dropDown, setDropDown] = useState(0);
+  const [cat, setCat] = useState([]);
+  const [filterTxt, setFilterTxt] = useState("");
+  var filteredData = [];
+  const handleChange = (e) => {
+    console.log("e", +e.target.value);
+    setDropDown(+e.target.value);
+  };
+  const onSearch = (e) => {
+    let val = e.target.value;
+    setFilterTxt(val);
+    console.log("set", val);
+  };
+  const handleDropDown = () => {
+    switch (dropDown) {
+      case 0:
+        return <Cat_Image open={open} setOpen={setOpen} filterTxt={filterTxt} filteredData={filteredData} cat={cat} setCat={setCat}/>;
+      case 1:
+        return <Favourite />;
+      case 2:
+        return <Unfavourite />;
+      default:
+        <Cat_Image />;
+    }
+  };
 
+
+  filteredData = cat?.filter((element) => {
+    return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
+  });
   return (
     <div className="App">
-      
-      
-      <Routes>
-        <Route path="/" element={<Cat_Image />}/>
-        <Route path="/favourite" element={<Favourite />}/>
-        <Route path="/unfavourite" element={<Unfavourite />}/>
-      </Routes>
-     </div>
+      <Navigation handleChange={handleChange} open={open} setOpen={setOpen}  onSearch={onSearch}/>
+      {handleDropDown()}
+    </div>
   );
 }
 

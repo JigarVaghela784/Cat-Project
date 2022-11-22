@@ -12,6 +12,7 @@ import {
 } from "../../store/action/favouriteAction";
 import { HeartFilled, LikeFilled } from "@ant-design/icons";
 import { likeImage, unlikeImage } from "../../store/action/likeAction";
+import { json } from "react-router-dom";
 const { Meta } = Card;
 
 function Tilt(props) {
@@ -25,38 +26,37 @@ function Tilt(props) {
   return <div ref={tilt} {...rest} />;
 }
 
-const ImageCard = ({ element}) => {
+const ImageCard = ({ element }) => {
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
   const [favourite, setFavourite] = useState([]);
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.favourite.data);
+  const data = useSelector((state) => state);
   const lData = useSelector((state) => state.like.data);
-  const favouriteData = useSelector((state) => state.favourite.data);
   const onLikePost = async () => {
     setIsLiked(true);
-    dispatch(likeImage(element, likeData));
-    setLikeData(lData)
+    dispatch(likeImage(element));
+    setLikeData(likeData + 1);
   };
-  console.log('likeData', likeData)
   const onUnLikePost = async () => {
     setIsLiked(false);
-    dispatch(unlikeImage(element, likeData));
+    dispatch(unlikeImage(element));
+    setLikeData(likeData - 1);
   };
-    const onFavouriteData = async () => {
-      setIsHeart(true);
-      dispatch(favouriteImage(element));
-    };
+  const onFavouriteData = async () => {
+    setIsHeart(true);
+    dispatch(favouriteImage(element));
+  };
 
-    const onUnFavouriteData = async () => {
-      setIsHeart(false);
-      let favourite_id = data?.data?.id;
-      dispatch(unfavouriteImage(favourite_id));
-    };
-    console.log('lData', lData)
 
-  // console.log("likeData", likeData);
+  const onUnFavouriteData =  () => {
+    let favourite_id = data?.favourite.favourite_id;
+        setIsHeart(false);
+        console.log("favourite_id1111", element);
+        dispatch(unfavouriteImage(favourite_id, element));
+  };
+
   const options = {
     scale: 1,
     speed: 10000,
