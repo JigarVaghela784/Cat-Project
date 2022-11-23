@@ -8,20 +8,19 @@ const initialState={
 console.log('data',initialState.data)
 const reducer=(state=initialState,action)=>{
     switch (action.type) {
-        case actionType.LIKE_IMAGE_START:
+        case actionType.UNLIKE_IMAGE_START:
             return{
                 ...state,
                 loading:true
             }
     
-        case actionType.LIKE_IMAGE_FAIL:
+        case actionType.UNLIKE_IMAGE_FAIL:
             return{
                 ...state,
                 error:action.error,
                 loading:false,
             }
-        case actionType.LIKE_IMAGE_SUCCESS:
-            console.log('action.data123456', action.data)
+        case actionType.UNLIKE_IMAGE_SUCCESS:
             return{
                 ...state,
                 data:action.data,

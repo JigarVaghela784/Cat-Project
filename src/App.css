@@ -1,27 +1,41 @@
-body{
+/* body{
   background-image: url('./asset/images/bg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: center; */
   background-size: 300vh 300vw;
   background-image: linear-gradient(
         -45deg, 
         rgb(59, 227, 221) 0%, 
-        rgb(87, 230, 206) 25%, 
-        rgb(172, 183, 68) 51%, 
-        rgba(255,53,127,1) 100%
+        rgb(87, 230, 206) 50%, 
+        rgb(218, 36, 70) 100%
   );  
   animation: AnimateBG 20s ease infinite;
 }
 
 @keyframes AnimateBG { 
   0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+  50%{background-position:0% 50%}
+  100%{background-position:100% 0%}
+} */
+body {
+	background: linear-gradient(45deg,#d15c5c, #d77474,#63e1c4, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 10s ease infinite;
+	height: 100vh;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 .App {
   text-align: center;

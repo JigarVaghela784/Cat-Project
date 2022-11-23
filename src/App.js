@@ -7,12 +7,14 @@ import Like from "./components/Main/Like/Like";
 import Unfavourite from "./components/Main/Unfavourite/Unfavourite";
 import { useState } from "react";
 import Navigation from "./components/Header/Header";
+import { useSelector } from "react-redux";
 
 function App() {
   const [open, setOpen] = useState(false);
   const [dropDown, setDropDown] = useState(0);
-  const [cat, setCat] = useState([]);
   const [filterTxt, setFilterTxt] = useState("");
+  const ImageData = useSelector((state) => state.allImage.data);
+
   var filteredData = [];
   const handleChange = (e) => {
     console.log("e", +e.target.value);
@@ -26,7 +28,14 @@ function App() {
   const handleDropDown = () => {
     switch (dropDown) {
       case 0:
-        return <Cat_Image open={open} setOpen={setOpen} filterTxt={filterTxt} filteredData={filteredData} cat={cat} setCat={setCat}/>;
+        return (
+          <Cat_Image
+            open={open}
+            setOpen={setOpen}
+            filterTxt={filterTxt}
+            filteredData={filteredData}
+          />
+        );
       case 1:
         return <Favourite />;
       case 2:
@@ -36,13 +45,17 @@ function App() {
     }
   };
 
-
-  filteredData = cat?.filter((element) => {
+  filteredData = ImageData?.filter((element) => {
     return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
   });
   return (
     <div className="App">
-      <Navigation handleChange={handleChange} open={open} setOpen={setOpen}  onSearch={onSearch}/>
+      <Navigation
+        handleChange={handleChange}
+        open={open}
+        setOpen={setOpen}
+        onSearch={onSearch}
+      />
       {handleDropDown()}
     </div>
   );

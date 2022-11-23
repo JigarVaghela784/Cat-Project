@@ -6,13 +6,13 @@ import { Avatar, Card } from "antd";
 import styles from "./ImageCard.module.css";
 import Like from "./Like/Like";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  favouriteImage,
-  unfavouriteImage,
-} from "../../store/action/favouriteAction";
+import { favouriteImage } from "../../store/action/favouriteAction";
 import { HeartFilled, LikeFilled } from "@ant-design/icons";
-import { likeImage, unlikeImage } from "../../store/action/likeAction";
+import { likeImage } from "../../store/action/likeAction";
 import { json } from "react-router-dom";
+import { unfavouriteImage } from "../../store/action/unfavouriteAction";
+import { unlikeImage } from "../../store/action/unlikeAction";
+import axios from "axios";
 const { Meta } = Card;
 
 function Tilt(props) {
@@ -26,13 +26,14 @@ function Tilt(props) {
   return <div ref={tilt} {...rest} />;
 }
 
-const ImageCard = ({ element }) => {
+const ImageCard = ({ element, favImgData, ImageData }) => {
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
-  const [favourite, setFavourite] = useState([]);
+  const [favouriteData, setFavouriteData] = useState(element.favourite);
   const dispatch = useDispatch();
-  const data = useSelector((state) => state);
+  const favId = useSelector((state) => state.favourite.data);
+  const unfavId = useSelector((state) => state.unfavourite.data);
   const lData = useSelector((state) => state.like.data);
   const onLikePost = async () => {
     setIsLiked(true);
@@ -45,17 +46,42 @@ const ImageCard = ({ element }) => {
     setLikeData(likeData - 1);
   };
   const onFavouriteData = async () => {
+    // checkFavData();
     setIsHeart(true);
     dispatch(favouriteImage(element));
+    setFavouriteData(favId);
+  };
+  const onUnFavouriteData = async () => {
+    console.log('element', element)
+    setIsHeart(false);
+    dispatch(unfavouriteImage(favouriteData.id, element.id));
+    setFavouriteData(unfavId);
   };
 
+  // const checkFavData = () => {
+  //   favImgData.data?.map((el) => {
+  //     let newTemp;
+  //     ImageData.data?.map((elem) => {
+  //       if (elem.id === el.id){
+  //         newTemp=tempImgData?.concat(el.id)
+  //         // setTempImgData(newTemp);
+  //         console.log("newTemp", el.id);
+  //       } 
+  //     });
+  //   });
+  // };
+    // const checkFavData = () => {
+  // const tempData = favImgData?.data?.map((ele) => {
+  //   const findData = ImageData?.data?.find((el) =>console.log('el', el));
+  //   return findData;
+  // });
+  // const tempData=favImgData?.data?.filter(element=>ImageData?.data?.id.includes(element));
 
-  const onUnFavouriteData =  () => {
-    let favourite_id = data?.favourite.favourite_id;
-        setIsHeart(false);
-        console.log("favourite_id1111", element);
-        dispatch(unfavouriteImage(favourite_id, element));
-  };
+  // console.log("tempDAta", tempData);
+  // };
+  // useEffect(() => {
+
+  // }, []);
 
   const options = {
     scale: 1,
@@ -65,7 +91,7 @@ const ImageCard = ({ element }) => {
   return (
     <div>
       <Tilt
-        style={{ boxShadow: "2px 10px 24px" }}
+        style={{ boxShadow: "2px 10px 24px", borderRadius: "15px 15px" }}
         className="box"
         options={options}
       >
@@ -84,6 +110,7 @@ const ImageCard = ({ element }) => {
                     color: "#f44336",
                   }}
                   onClick={onUnFavouriteData}
+                  id={element.id}
                 />
               ) : (
                 <HeartFilled
@@ -94,6 +121,7 @@ const ImageCard = ({ element }) => {
                     color: "#ddd",
                   }}
                   onClick={onFavouriteData}
+                  id={element.id}
                 />
               )}
             </div>

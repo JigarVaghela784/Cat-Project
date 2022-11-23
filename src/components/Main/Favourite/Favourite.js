@@ -1,30 +1,30 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import style from "../Cat_image.module.css";
-import ImageCard from "../ImageCard";
-import { connect, useDispatch, useSelector } from "react-redux";
-import Navigation from "../../Header/Header";
-import { getAllFavouriteData } from "../../../store/action/favouriteAction";
+// import React, { useEffect, useState } from "react";
+// import { fetchFavouriteImage } from "../../../store/action/allFavouriteAction";
+// import { useDispatch, useSelector } from "react-redux";
+// import ImageCard from "../ImageCard";
+// import style from "../Cat_image.module.css";
+// import Spinner from "../Spinner";
 
-const Favourite = ({ data }) => {
-  console.log("data======================", data);
-  const dispatch = useDispatch();
-  const favData = useSelector((state) => state.favourite.data);
-  console.log('favData', favData)
-  useEffect(() => {
-    dispatch(getAllFavouriteData());
-  }, []);
-  return (
-    <div>
-      <div className={style.ImgDiv}>
-        {favData?.map((el) => {
-          return (
-            <ImageCard key={el.image.id} element={el.image} favData={favData} />
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+// const Favourite = () => {
+//   const [dataArray, setDataArray] = useState();
+//   const dispatch = useDispatch();
+//   useEffect(() => {
+//     dispatch(fetchFavouriteImage());
+//     setDataArray(data.data);
+//   }, [fetchFavouriteImage]);
+//   let imageCard = null;
 
-export default Favourite;
+//   if (data.loading) {
+//     imageCard = <Spinner />;
+//   } else {
+//     <div className={style.ImgDiv}>
+//       {dataArray?.map((el) => {
+//         console.log("el", el);
+//         return <ImageCard key={el?.id} element={el} />;
+//       })}
+//     </div>;
+//   }
+//   return <div> {imageCard}</div>;
+// };
+
+// export default Favourite;

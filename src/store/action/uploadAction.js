@@ -37,9 +37,10 @@ export const uploadImage = (image) => {
         message: "Image Uploaded Successfully!!",
       });
       window.location.reload()
+      notification["success"]({
+        message: "Image Upload Successfully!!",
+      });
       dispatch(uploadImageSuccess(response.data));
-      info.push(response.data)
-      localStorage.setItem("uploadData",JSON.stringify(info))
     } catch (error) {
       notification["error"]({
         message: error.response.data,
