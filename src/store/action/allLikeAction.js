@@ -37,8 +37,7 @@ export const fetchLikeImage = () => {
           body: payLoad,
         }
       );
-      console.log('res111111111111111', res)
-      dispatch(fetchLikeImageSuccess(res));
+      dispatch(fetchLikeImageSuccess(res.data));
     } catch (error) {
       console.log("error", error);
       dispatch(fetchLikeImageFail(error));

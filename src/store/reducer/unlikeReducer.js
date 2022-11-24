@@ -1,11 +1,10 @@
 import * as actionType from '../action/actionType'
 
 const initialState={
-    data:0,
+    data:null,
     error:null,
     loading:false
 }
-console.log('data',initialState.data)
 const reducer=(state=initialState,action)=>{
     switch (action.type) {
         case actionType.UNLIKE_IMAGE_START:

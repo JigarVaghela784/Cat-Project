@@ -21,11 +21,6 @@ const reducer=(state=initialState,action)=>{
       }
   
     case actionTypes.FAVOURITE_IMAGE_SUCCESS:
-      // const favId=JSON.parse(localStorage.getItem("favId"))||[]
-      const newId=[];
-      newId?.concat(action?.data?.id)
-      console.log('favID', newId)
-      // localStorage.setItem("favId",JSON.stringify(favId))
     return{
         ...state,
         data:action.data,

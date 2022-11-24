@@ -5,7 +5,6 @@ const initialState = {
   error: null,
   loading: false,
 };
-console.log('data',initialState.data)
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.UPLOAD_IMAGE_START:
@@ -17,10 +16,9 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionType.UPLOAD_IMAGE_SUCCESS:
-        console.log('data', state.data)
       return {
         ...state,
-        data: JSON.parse(sessionStorage.getItem("uploadData")),
+        data:action.data,
         loading: false,
       };
 
@@ -32,7 +30,7 @@ const reducer = (state = initialState, action) => {
         loading: false,
       };
     default:
-      return state
+      return state;
   }
 };
 export default reducer;

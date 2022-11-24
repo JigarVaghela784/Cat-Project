@@ -25,7 +25,6 @@ export const uploadImage = (image) => {
     dispatch(uploadImageStart());
     const url = "https://api.thecatapi.com/v1/images/upload";
     let formData = new FormData();
-    let info = JSON.parse(localStorage.getItem("uploadData")) || [];
     formData.append("file", image);
     try {
       axios.defaults.headers.common["x-api-key"] =
@@ -37,13 +36,10 @@ export const uploadImage = (image) => {
         message: "Image Uploaded Successfully!!",
       });
       window.location.reload()
-      notification["success"]({
-        message: "Image Upload Successfully!!",
-      });
       dispatch(uploadImageSuccess(response.data));
     } catch (error) {
       notification["error"]({
-        message: error.response.data,
+        message: error.response,
       });
       dispatch(uploadImageFail(error.response.data));
     }

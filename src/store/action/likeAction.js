@@ -10,7 +10,6 @@ export const likeImageStart=()=>{
 }
 
 export const likeImageSuccess=(data)=>{
-    console.log('data123456', data)
     return{
         type:actionTypes.LIKE_IMAGE_SUCCESS,
         data:data
@@ -26,11 +25,12 @@ export const likeImageFail=(error)=>{
 export const likeImage=(element,)=>{
     return async (dispatch)=>{
         dispatch(likeImageStart())
+        let value=0;
         try {
             const payLoad = {
               image_id: element.id,
-              sub_id: "user_123",
-              value: 1,
+              sub_id: "user_1234",
+              value: value+1,
             };
             console.log('element.id', element.id)
             axios.defaults.headers.common["x-api-key"] =
@@ -43,7 +43,7 @@ export const likeImage=(element,)=>{
                 message: "Image Vote Successfully!!",
               });
 
-            dispatch(likeImageSuccess(response.data.value))
+            dispatch(likeImageSuccess(response.data))
             console.log("response", response.data);
           } catch (error) {
             notification["error"]({

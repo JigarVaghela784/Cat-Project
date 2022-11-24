@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import Cat_Image from "./Main";
+// import Cat_Image from "./Main";
 import VanillaTilt from "vanilla-tilt";
 import { Avatar, Card } from "antd";
 // import Favourite from "./Favourite/Favourite";
 import styles from "./ImageCard.module.css";
-import Like from "./Like/Like";
+// import Like from "./Like/Like";
 import { useDispatch, useSelector } from "react-redux";
 import { favouriteImage } from "../../store/action/favouriteAction";
 import { HeartFilled, LikeFilled } from "@ant-design/icons";
 import { likeImage } from "../../store/action/likeAction";
-import { json } from "react-router-dom";
 import { unfavouriteImage } from "../../store/action/unfavouriteAction";
 import { unlikeImage } from "../../store/action/unlikeAction";
-import axios from "axios";
 const { Meta } = Card;
 
 function Tilt(props) {
@@ -26,15 +24,20 @@ function Tilt(props) {
   return <div ref={tilt} {...rest} />;
 }
 
-const ImageCard = ({ element, favImgData, ImageData }) => {
+const ImageCard = ({ element }) => {
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
-  const [favouriteData, setFavouriteData] = useState(element.favourite);
+  const [favouriteData, setFavouriteData] = useState([]);
+  const [allLikeData, setAllLikeData] = useState([]);
   const dispatch = useDispatch();
+
   const favId = useSelector((state) => state.favourite.data);
   const unfavId = useSelector((state) => state.unfavourite.data);
-  const lData = useSelector((state) => state.like.data);
+  const likeStateData = useSelector((state) => state.like);
+  const favImgData = useSelector((state) => state.allFavImage.data);
+  const likeImgData = useSelector((state) => state.allLikeImage.data);
+
   const onLikePost = async () => {
     setIsLiked(true);
     dispatch(likeImage(element));
@@ -42,46 +45,35 @@ const ImageCard = ({ element, favImgData, ImageData }) => {
   };
   const onUnLikePost = async () => {
     setIsLiked(false);
-    dispatch(unlikeImage(element));
+    dispatch(unlikeImage(likeStateData.data));
     setLikeData(likeData - 1);
   };
   const onFavouriteData = async () => {
-    // checkFavData();
     setIsHeart(true);
     dispatch(favouriteImage(element));
     setFavouriteData(favId);
   };
   const onUnFavouriteData = async () => {
-    console.log('element', element)
     setIsHeart(false);
-    dispatch(unfavouriteImage(favouriteData.id, element.id));
-    setFavouriteData(unfavId);
+    dispatch(unfavouriteImage(favouriteData.id, element));
+    setFavouriteData(element.favourite);
   };
 
-  // const checkFavData = () => {
-  //   favImgData.data?.map((el) => {
-  //     let newTemp;
-  //     ImageData.data?.map((elem) => {
-  //       if (elem.id === el.id){
-  //         newTemp=tempImgData?.concat(el.id)
-  //         // setTempImgData(newTemp);
-  //         console.log("newTemp", el.id);
-  //       } 
-  //     });
-  //   });
-  // };
-    // const checkFavData = () => {
-  // const tempData = favImgData?.data?.map((ele) => {
-  //   const findData = ImageData?.data?.find((el) =>console.log('el', el));
-  //   return findData;
-  // });
-  // const tempData=favImgData?.data?.filter(element=>ImageData?.data?.id.includes(element));
+  useEffect(() => {
+    favImgData?.map((ele) => {
+      if (ele.id === element.id) {
+        setIsHeart(true);
+        setFavouriteData(ele?.favourite?.id);
+      }
+    });
 
-  // console.log("tempDAta", tempData);
-  // };
-  // useEffect(() => {
-
-  // }, []);
+    likeImgData?.map((elem) => {
+      if (elem.id === element.id) {
+        setIsLiked(true);
+        console.log("elemLike", elem);
+      }
+    });
+  }, [favImgData, favouriteData, element.id, likeImgData]);
 
   const options = {
     scale: 1,
@@ -97,7 +89,7 @@ const ImageCard = ({ element, favImgData, ImageData }) => {
       >
         <Card
           className={styles.mainContainer}
-          cover={<img src={element.url} />}
+          cover={<img src={element.url} alt={element.id} />}
         >
           <div className={styles.favourite}>
             <div>

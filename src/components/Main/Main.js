@@ -27,7 +27,6 @@ const Main = ({ open, setOpen, filterTxt, filteredData }) => {
   const [isImage, setIsImage] = useState(false);
   const dispatch = useDispatch();
   const ImageData = useSelector((state) => state.allImage);
-  const [tempImgData, setTempImgData] = useState();
   const favImgData = useSelector((state) => state.allFavImage);
   const dataArray = filterTxt === "" ? ImageData.data : filteredData;
   const handleClick = () => {
@@ -41,13 +40,8 @@ const Main = ({ open, setOpen, filterTxt, filteredData }) => {
   useEffect(() => {
     if (isImage) {
       dispatch(fetchFavouriteImage());
-      dispatch(fetchLikeImage())
+      dispatch(fetchLikeImage());
     }
-  // const newIdDAta=ImageData?.data?.map(el=>{
-    // console.log('el.id', el.id)
-    const newIdDAta=favImgData.data?.filter(image => console.log(image.id))
-    // })
-    console.log('newIdData', newIdDAta)
   }, [ImageData]);
 
   let newDataArray = null;
@@ -61,8 +55,6 @@ const Main = ({ open, setOpen, filterTxt, filteredData }) => {
             <ImageCard
               key={el?.id}
               element={el}
-              favImgData={favImgData}
-              ImageData={ImageData}
             />
           );
         })}

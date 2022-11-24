@@ -1,6 +1,6 @@
 import * as actionTypes from '../action/actionType'
 const initialState={
-  data:null,
+  data:[],
   error:null,
   loading:false
 }
