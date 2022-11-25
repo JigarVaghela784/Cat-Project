@@ -30,9 +30,9 @@ export const fetchImage = () => {
       const response = await axios.get(
         "https://api.thecatapi.com/v1/images?limit=5"
       );
-      notification["success"]({
-        message: "Fetch  Image Successfully!!",
-      });
+        // notification["success"]({
+        //   message: "Fetch  Image Successfully!!",
+        // });
       dispatch(fetchImageSuccess(response.data));
     } catch (error) {
       notification["error"]({

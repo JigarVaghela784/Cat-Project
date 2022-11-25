@@ -35,7 +35,6 @@ export const uploadImage = (image) => {
       notification["success"]({
         message: "Image Uploaded Successfully!!",
       });
-      window.location.reload()
       dispatch(uploadImageSuccess(response.data));
     } catch (error) {
       notification["error"]({

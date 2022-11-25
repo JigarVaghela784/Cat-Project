@@ -37,6 +37,13 @@ export const fetchLikeImage = () => {
           body: payLoad,
         }
       );
+      const mapped=res.data.map(like=>{
+        return{
+            id:like.image.id,
+            url:like.image.url,
+            like,
+        }
+    })
       dispatch(fetchLikeImageSuccess(res.data));
     } catch (error) {
       console.log("error", error);

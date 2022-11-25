@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import Cat_Image from "./Main";
 import VanillaTilt from "vanilla-tilt";
-import { Avatar, Card } from "antd";
+import {  Card, notification } from "antd";
 // import Favourite from "./Favourite/Favourite";
 import styles from "./ImageCard.module.css";
 // import Like from "./Like/Like";
@@ -11,6 +11,7 @@ import { HeartFilled, LikeFilled } from "@ant-design/icons";
 import { likeImage } from "../../store/action/likeAction";
 import { unfavouriteImage } from "../../store/action/unfavouriteAction";
 import { unlikeImage } from "../../store/action/unlikeAction";
+import axios from "axios";
 const { Meta } = Card;
 
 function Tilt(props) {
@@ -28,52 +29,95 @@ const ImageCard = ({ element }) => {
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
-  const [favouriteData, setFavouriteData] = useState([]);
-  const [allLikeData, setAllLikeData] = useState([]);
+  const [favouriteData, setFavouriteData] = useState(element.favourite);
+  const [allLikeData, setAllLikeData] = useState(element.like);
   const dispatch = useDispatch();
 
   const favId = useSelector((state) => state.favourite.data);
   const unfavId = useSelector((state) => state.unfavourite.data);
-  const likeStateData = useSelector((state) => state.like);
+  const likeStateData = useSelector((state) => state.like.data);
   const favImgData = useSelector((state) => state.allFavImage.data);
   const likeImgData = useSelector((state) => state.allLikeImage.data);
 
   const onLikePost = async () => {
     setIsLiked(true);
-    dispatch(likeImage(element));
-    setLikeData(likeData + 1);
+    try {
+      const payLoad = {
+        image_id: element.id,
+        sub_id: "user_1234",
+        value: 1,
+      };
+      console.log('element.id', element.id)
+      axios.defaults.headers.common["x-api-key"] =
+        "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
+      const response = await axios.post(
+        "https://api.thecatapi.com/v1/votes",
+        payLoad
+      );
+      notification["success"]({
+          message: "Image Vote Successfully!!",
+        });
+
+      console.log("response", response.data);
+      setAllLikeData(response.data)
+    } catch (error) {
+      notification["error"]({
+          message: error.response.data,
+        });
+      console.log("error", error);
+    }
+    // setLikeData(likeData + 1);
   };
   const onUnLikePost = async () => {
+    console.log('likeImgData', allLikeData)
     setIsLiked(false);
-    dispatch(unlikeImage(likeStateData.data));
+    dispatch(unlikeImage(allLikeData?.id));
     setLikeData(likeData - 1);
   };
   const onFavouriteData = async () => {
     setIsHeart(true);
-    dispatch(favouriteImage(element));
-    setFavouriteData(favId);
+    try {
+      axios.defaults.headers.common["x-api-key"] =
+        "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
+      const res = await axios.post("https://api.thecatapi.com/v1/favourites", {
+        image_id: element.id,
+      });
+      notification["success"]({
+        message: "Image Like Successfully!!",
+      });
+      console.log("res.data", res.data);
+      setFavouriteData(res.data);
+    } catch (error) {
+      notification["error"]({
+        message: error.response.data,
+      });
+    }
+    console.log("favId", favouriteData);
   };
   const onUnFavouriteData = async () => {
+    console.log("favouriteData.id", favouriteData.id);
+    console.log("first");
     setIsHeart(false);
     dispatch(unfavouriteImage(favouriteData.id, element));
     setFavouriteData(element.favourite);
   };
 
   useEffect(() => {
-    favImgData?.map((ele) => {
+    favImgData?.filter((ele) => {
       if (ele.id === element.id) {
         setIsHeart(true);
-        setFavouriteData(ele?.favourite?.id);
+        setFavouriteData(ele.favourite);
       }
     });
 
     likeImgData?.map((elem) => {
-      if (elem.id === element.id) {
+      if (elem.image_id === element.id) {
         setIsLiked(true);
-        console.log("elemLike", elem);
+        setAllLikeData(elem)
+        setLikeData(likeData + 1);
       }
     });
-  }, [favImgData, favouriteData, element.id, likeImgData]);
+  }, [favImgData, element.id, likeImgData]);
 
   const options = {
     scale: 1,

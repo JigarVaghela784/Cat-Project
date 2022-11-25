@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    
+    grid-area:initial;
     transform: translateZ(20px)
 }
 .favourite{

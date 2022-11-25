@@ -21,11 +21,8 @@ export const unlikeImageFail = (error) => {
   };
 };
 
-export const unlikeImage = (likeStateData) => {
+export const unlikeImage = (vote_id) => {
   return async (dispatch) => {
-    console.log('likeStateData', likeStateData)
-    let vote_id=likeStateData.id
-    console.log('vote_id', vote_id)
     dispatch(unlikeImageStart());
     try {
       axios.defaults.headers.common["x-api-key"] =

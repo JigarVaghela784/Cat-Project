@@ -7,10 +7,10 @@ export const favouriteImageStart = () => {
   };
 };
 
-export const favouriteImageSuccess = (data, isFav) => {
+export const favouriteImageSuccess = (data) => {
   return {
     type: actionType.FAVOURITE_IMAGE_SUCCESS,
-    data,
+    data:data,
   };
 };
 

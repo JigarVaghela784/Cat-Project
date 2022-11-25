@@ -7,8 +7,11 @@ import Like from "./components/Main/Like/Like";
 import Unfavourite from "./components/Main/Unfavourite/Unfavourite";
 import { useEffect, useState } from "react";
 import Navigation from "./components/Header/Header";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import UploadModal from "./components/Header/Upload/UploadModal";
+import { fetchImage } from "./store/action/allImageAction";
+import { fetchFavouriteImage } from "./store/action/allFavouriteAction";
+import { fetchLikeImage } from "./store/action/allLikeAction";
 function App() {
   const [open, setOpen] = useState(false);
   const [dropDown, setDropDown] = useState(0);
@@ -17,7 +20,24 @@ function App() {
   const [allUnFavImage, setAllUnFavImage] = useState();
   const ImageData = useSelector((state) => state.allImage.data);
   const favImgData = useSelector((state) => state.allFavImage.data);
+  const likeImgData=useSelector((state)=>state.allLikeImage.data)
+  console.log('likeImgData', likeImgData)
+  const dispatch = useDispatch();
+  const [isImage, setIsImage] = useState(false);
+  const handleLoad = () => {
+    dispatch(fetchImage());
+    setIsImage(true);
+  };
 
+  useEffect(() => {
+    handleLoad();
+  }, []);
+  useEffect(() => {
+    if (isImage) {
+      dispatch(fetchFavouriteImage());
+      dispatch(fetchLikeImage());
+    }
+  }, [ImageData]);
   var filteredData = [];
   const handleChange = (e) => {
     console.log("e", +e.target.value);
@@ -40,19 +60,7 @@ function App() {
       });
     });
   }, [favImgData]);
-  // useEffect(() => {
-  //   allFavImage?.filter((el) => {
-  //       ImageData?.find((ele) => {
-  //         if (ele.id !== el.id) {
-  //           console.log("elem", ele.id,el.id);
-  //           unFavImage.push(el);
-  //           setAllUnFavImage(unFavImage);
-  //         }
-  //       });
-  //     });
-  // }, [allFavImage]);
-  // console.log("allFavImage", allFavImage);
-  // console.log("allUnFavImage", allUnFavImage);
+  
   const handleDropDown = () => {
     switch (dropDown) {
       case 0:
@@ -85,6 +93,7 @@ function App() {
         onSearch={onSearch}
       />
       {handleDropDown()}
+      <UploadModal open={open} setOpen={setOpen} setDropDown={setDropDown} />
     </div>
   );
 }

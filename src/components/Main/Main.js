@@ -1,19 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DropDown from "../Header/DropDown/DropDown";
-// import Search from "../Header/Search/SearchField";
-// import Upload from "../Header/Upload/Upload";
 import style from "./Cat_image.module.css";
 import ImageCard from "./ImageCard";
-import { Button } from "antd";
-import UploadModal from "../Header/Upload/UploadModal.js";
 import { AudioOutlined } from "@ant-design/icons";
 import { Input, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchImage } from "../../store/action/allImageAction";
 import Spinner from "./Spinner";
-import { fetchFavouriteImage } from "../../store/action/allFavouriteAction";
-import { fetchLikeImage } from "../../store/action/allLikeAction";
 const { Search } = Input;
 const suffix = (
   <AudioOutlined
@@ -24,25 +16,9 @@ const suffix = (
   />
 );
 const Main = ({ open, setOpen, filterTxt, filteredData }) => {
-  const [isImage, setIsImage] = useState(false);
-  const dispatch = useDispatch();
   const ImageData = useSelector((state) => state.allImage);
   const favImgData = useSelector((state) => state.allFavImage);
   const dataArray = filterTxt === "" ? ImageData.data : filteredData;
-  const handleClick = () => {
-    dispatch(fetchImage());
-    setIsImage(true);
-  };
-
-  useEffect(() => {
-    handleClick();
-  }, []);
-  useEffect(() => {
-    if (isImage) {
-      dispatch(fetchFavouriteImage());
-      dispatch(fetchLikeImage());
-    }
-  }, [ImageData]);
 
   let newDataArray = null;
   if (ImageData.loading) {
@@ -65,7 +41,7 @@ const Main = ({ open, setOpen, filterTxt, filteredData }) => {
   return (
     <div>
       {newDataArray}
-      {open && <UploadModal open={open} setOpen={setOpen} />}
+      {/* {open && <UploadModal open={open} setOpen={setOpen} />} */}
     </div>
   );
 };
