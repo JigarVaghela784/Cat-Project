@@ -47,7 +47,6 @@ const ImageCard = ({ element }) => {
         sub_id: "user_1234",
         value: 1,
       };
-      console.log('element.id', element.id)
       axios.defaults.headers.common["x-api-key"] =
         "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
       const response = await axios.post(
@@ -57,19 +56,16 @@ const ImageCard = ({ element }) => {
       notification["success"]({
           message: "Image Vote Successfully!!",
         });
-
-      console.log("response", response.data);
       setAllLikeData(response.data)
+      setLikeData(response.data.value)
     } catch (error) {
       notification["error"]({
           message: error.response.data,
         });
       console.log("error", error);
     }
-    // setLikeData(likeData + 1);
   };
   const onUnLikePost = async () => {
-    console.log('likeImgData', allLikeData)
     setIsLiked(false);
     dispatch(unlikeImage(allLikeData?.id));
     setLikeData(likeData - 1);

@@ -29,8 +29,8 @@ export const likeImage=(element,)=>{
         try {
             const payLoad = {
               image_id: element.id,
-              sub_id: "user_1234",
-              value: value+1,
+              sub_id: "user_123",
+              value: 1,
             };
             console.log('element.id', element.id)
             axios.defaults.headers.common["x-api-key"] =

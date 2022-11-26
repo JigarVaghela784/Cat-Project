@@ -1,40 +1,40 @@
-.mainContainer{
-    transform-style: preserve-3d;
-    transform: perspective(1000px);
+.mainContainer {
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
 }
 
-.detailWrapper{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    grid-area:initial;
-    transform: translateZ(20px)
-}
-.favourite{
-    position: absolute;
-    top: 5%;
-    right: 5%;
+.detailWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  grid-area:initial;
+  transform: translateZ(20px);
 }
 
-.likeWrapper{
-
-    padding: 0px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.favourite {
+  position: absolute;
+  top: 5%;
+  right: 5%;
 }
-.likeWrapper div{
-    padding: 5px;
+
+.likeWrapper {
+  padding: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.likeWrapper div {
+  padding: 5px;
 }
 :global(.ant-card-body) {
-    padding: 15px !important;
-    font-size: 17px ;
+  padding: 15px !important;
+  font-size: 17px;
 }
-:global(.ant-card-bordered){
-    border-radius: 15px !important;
+:global(.ant-card-bordered) {
+  border-radius: 15px !important;
 }
-:global(.ant-card-bordered img){
-    border-radius: 10px 10px 0px 0px !important;
+:global(.ant-card-bordered img) {
+  border-radius: 10px 10px 0px 0px !important;
 }

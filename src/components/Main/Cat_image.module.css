@@ -13,10 +13,10 @@
 .ImgDiv {
   padding: 119px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  row-gap: 31px;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  row-gap: 30px;
   place-items: center;
-  column-gap: 0px;
+  column-gap: 110px;
 }
 
 .ImgDiv  img {

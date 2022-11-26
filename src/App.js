@@ -1,7 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Cat_Image from "./components/Main/Main";
-import { Route, Routes } from "react-router-dom";
+import Main from "./components/Main/Main";
 import Favourite from "./components/Main/Favourite/Favourite";
 import Like from "./components/Main/Like/Like";
 import Unfavourite from "./components/Main/Unfavourite/Unfavourite";
@@ -17,11 +15,9 @@ function App() {
   const [dropDown, setDropDown] = useState(0);
   const [filterTxt, setFilterTxt] = useState("");
   const [allFavImage, setAllFavImage] = useState();
-  const [allUnFavImage, setAllUnFavImage] = useState();
   const ImageData = useSelector((state) => state.allImage.data);
   const favImgData = useSelector((state) => state.allFavImage.data);
   const likeImgData=useSelector((state)=>state.allLikeImage.data)
-  console.log('likeImgData', likeImgData)
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const handleLoad = () => {
@@ -31,7 +27,7 @@ function App() {
 
   useEffect(() => {
     handleLoad();
-  }, []);
+  }, [fetchImage]);
   useEffect(() => {
     if (isImage) {
       dispatch(fetchFavouriteImage());
@@ -46,26 +42,24 @@ function App() {
   const onSearch = (e) => {
     let val = e.target.value;
     setFilterTxt(val);
-    console.log("set", val);
   };
   let favImage = [];
-  let unFavImage = [];
   useEffect(() => {
     ImageData?.filter((el) => {
-      favImgData?.find((elem) => {
+      return favImgData?.find((elem) => {
         if (elem.id === el.id) {
           favImage.push(el);
           setAllFavImage(favImage);
         }
       });
     });
-  }, [favImgData]);
+  }, [favImgData,ImageData]);
   
   const handleDropDown = () => {
     switch (dropDown) {
       case 0:
         return (
-          <Cat_Image
+          <Main
             open={open}
             setOpen={setOpen}
             filterTxt={filterTxt}
@@ -77,7 +71,7 @@ function App() {
       case 2:
         return <Unfavourite ImageData={ImageData} allFavImage={allFavImage} />;
       default:
-        <Cat_Image />;
+        <Main />;
     }
   };
 
