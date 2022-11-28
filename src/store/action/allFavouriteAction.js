@@ -36,7 +36,7 @@ export const fetchFavouriteImage=()=>{
                     favourite,
                 }
             })
-          
+            
             dispatch(fetchFavouriteImageSuccess(mapped))
         }catch(error){
             console.log('error', error)

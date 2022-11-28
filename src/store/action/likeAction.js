@@ -22,17 +22,15 @@ export const likeImageFail=(error)=>{
     }
 }
 
-export const likeImage=(element,)=>{
+export const likeImage=(element,setAllLikeData)=>{
     return async (dispatch)=>{
         dispatch(likeImageStart())
-        let value=0;
         try {
             const payLoad = {
               image_id: element.id,
               sub_id: "user_123",
               value: 1,
             };
-            console.log('element.id', element.id)
             axios.defaults.headers.common["x-api-key"] =
               "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
             const response = await axios.post(
@@ -42,15 +40,13 @@ export const likeImage=(element,)=>{
             notification["success"]({
                 message: "Image Vote Successfully!!",
               });
-
-            dispatch(likeImageSuccess(response.data))
-            console.log("response", response.data);
+              dispatch(likeImageSuccess(response.data))
+              setAllLikeData(response.data)
           } catch (error) {
             notification["error"]({
-                message: error.response.data,
+                message: error  
               });
             dispatch(likeImageFail(error))
-            console.log("error", error);
           }
     }
 }

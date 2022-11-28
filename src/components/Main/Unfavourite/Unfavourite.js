@@ -2,32 +2,32 @@ import React, { useEffect, useState } from "react";
 import style from "../Cat_image.module.css";
 import ImageCard from "../ImageCard";
 
-const Unfavourite = ({ ImageData, allFavImage }) => {
+const Unfavourite = ({ ImageData, allFavImage, filterTxt }) => {
   const [data, setData] = useState([]);
-
+  let filteredUnfavData = [];
   useEffect(() => {
     const newEle = [...data];
     ImageData?.filter((element) => {
+      if (allFavImage.length ===0) {
+        newEle?.push(element);
+      }
       return allFavImage?.filter((ele) => {
-        if (ele.id !== element.id) {
-          console.log("element====11", element);
-          console.log("newEle initially", newEle);
+        if (element.id !== ele.id) {
           newEle?.push(element);
-          console.log("newEle after process", newEle);
         }
       });
     });
-    console.log("newEle@@@", newEle);
     setData(newEle);
-    console.log("data inside useeffect", data);
   }, [ImageData]);
-  console.log("data@@@", data);
-
+  filteredUnfavData = data?.filter((element) => {
+    return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
+  });
+  const dataArray = filterTxt === "" ? data : filteredUnfavData;
   return (
     <div>
       <div className={style.ImgDiv}>
-        {data?.map((element) => {
-            console.log("data1234", element);
+        {dataArray?.map((element) => {
+          console.log("data1234", element);
           return <ImageCard key={element.id} element={element} />;
         })}
       </div>

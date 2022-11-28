@@ -15,7 +15,7 @@ const suffix = (
     }}
   />
 );
-const Main = ({ open, setOpen, filterTxt, filteredData }) => {
+const Main = ({ filterTxt, filteredData,forceUpdate,setAllFavImage,allFavImage }) => {
   const ImageData = useSelector((state) => state.allImage);
   const favImgData = useSelector((state) => state.allFavImage);
   const dataArray = filterTxt === "" ? ImageData.data : filteredData;
@@ -29,6 +29,9 @@ const Main = ({ open, setOpen, filterTxt, filteredData }) => {
         {dataArray?.map((el) => {
           return (
             <ImageCard
+            setAllFavImage={setAllFavImage}
+            allFavImage={allFavImage}
+            // forceUpdate={forceUpdate}
               key={el?.id}
               element={el}
             />

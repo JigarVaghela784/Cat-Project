@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 // import Cat_Image from "./Main";
 import VanillaTilt from "vanilla-tilt";
-import {  Card, notification } from "antd";
+import { Card, notification } from "antd";
 // import Favourite from "./Favourite/Favourite";
 import styles from "./ImageCard.module.css";
 // import Like from "./Like/Like";
@@ -25,7 +25,7 @@ function Tilt(props) {
   return <div ref={tilt} {...rest} />;
 }
 
-const ImageCard = ({ element }) => {
+const ImageCard = ({ element,setAllFavImage,allFavImage }) => {
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
@@ -41,58 +41,20 @@ const ImageCard = ({ element }) => {
 
   const onLikePost = async () => {
     setIsLiked(true);
-    try {
-      const payLoad = {
-        image_id: element.id,
-        sub_id: "user_1234",
-        value: 1,
-      };
-      axios.defaults.headers.common["x-api-key"] =
-        "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
-      const response = await axios.post(
-        "https://api.thecatapi.com/v1/votes",
-        payLoad
-      );
-      notification["success"]({
-          message: "Image Vote Successfully!!",
-        });
-      setAllLikeData(response.data)
-      setLikeData(response.data.value)
-    } catch (error) {
-      notification["error"]({
-          message: error.response.data,
-        });
-      console.log("error", error);
-    }
+    dispatch(likeImage(element,setAllLikeData))
+    setLikeData(1); 
   };
   const onUnLikePost = async () => {
     setIsLiked(false);
     dispatch(unlikeImage(allLikeData?.id));
-    setLikeData(likeData - 1);
+    setLikeData(0);
   };
   const onFavouriteData = async () => {
     setIsHeart(true);
-    try {
-      axios.defaults.headers.common["x-api-key"] =
-        "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
-      const res = await axios.post("https://api.thecatapi.com/v1/favourites", {
-        image_id: element.id,
-      });
-      notification["success"]({
-        message: "Image Like Successfully!!",
-      });
-      console.log("res.data", res.data);
-      setFavouriteData(res.data);
-    } catch (error) {
-      notification["error"]({
-        message: error.response.data,
-      });
-    }
-    console.log("favId", favouriteData);
+    dispatch(favouriteImage(element,setFavouriteData))
+    allFavImage.push(element)
   };
   const onUnFavouriteData = async () => {
-    console.log("favouriteData.id", favouriteData.id);
-    console.log("first");
     setIsHeart(false);
     dispatch(unfavouriteImage(favouriteData.id, element));
     setFavouriteData(element.favourite);
@@ -109,7 +71,7 @@ const ImageCard = ({ element }) => {
     likeImgData?.map((elem) => {
       if (elem.image_id === element.id) {
         setIsLiked(true);
-        setAllLikeData(elem)
+        setAllLikeData(elem);
         setLikeData(likeData + 1);
       }
     });

@@ -20,7 +20,7 @@ export const uploadImageFail = (error) => {
   };
 };
 
-export const uploadImage = (image) => {
+export const uploadImage = (image,forceUpdate) => {
   return async (dispatch) => {
     dispatch(uploadImageStart());
     const url = "https://api.thecatapi.com/v1/images/upload";
@@ -36,6 +36,7 @@ export const uploadImage = (image) => {
         message: "Image Uploaded Successfully!!",
       });
       dispatch(uploadImageSuccess(response.data));
+      // forceUpdate()
     } catch (error) {
       notification["error"]({
         message: error.response,
