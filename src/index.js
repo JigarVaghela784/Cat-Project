@@ -5,33 +5,26 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "antd/dist/antd.css";
 import { Provider } from "react-redux";
-import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import uploadReducer from "./store/reducer/uploadReducer";
-import FavouriteReducer from "./store/reducer/favouriteReducer";
+import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-import likeReducer from "./store/reducer/likeReducer";
 import { BrowserRouter } from "react-router-dom";
-import UnfavouriteReducer from "./store/reducer/unfavouriteReducer";
-import UnlikeReducer from "./store/reducer/unlikeReducer";
-import allFavImage from "./store/reducer/allFavouriteReducer";
-import allImageReducer from "./store/reducer/allImageReducer";
-import allLikeImage from "./store/reducer/allLikeReducer";
+import reducer from "./store/reducer/reducer";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const rootReducer = combineReducers({
-  allImage: allImageReducer,
-  upload: uploadReducer,
-  favourite: FavouriteReducer,
-  unfavourite: UnfavouriteReducer,
-  unlike: UnlikeReducer,
-  like: likeReducer,
-  allFavImage: allFavImage,
-  allLikeImage: allLikeImage,
-});
+// const rootReducer = combineReducers({
+  // allImage: allImageReducer,
+  // upload: uploadReducer,
+  // favourite: FavouriteReducer,
+  // unfavourite: UnfavouriteReducer,
+  // unlike: UnlikeReducer,
+  // like: likeReducer,
+  // allFavImage: allFavImage,
+  // allLikeImage: allLikeImage,
+// });
 
 const store = createStore(
-  rootReducer,
+  reducer,
   composeEnhancers(applyMiddleware(thunk, logger))
 );
 

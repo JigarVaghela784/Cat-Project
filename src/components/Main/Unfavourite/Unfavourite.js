@@ -2,23 +2,18 @@ import React, { useEffect, useState } from "react";
 import style from "../Cat_image.module.css";
 import ImageCard from "../ImageCard";
 
-const Unfavourite = ({ ImageData, allFavImage, filterTxt }) => {
+const Unfavourite = ({ allImage, filterTxt }) => {
   const [data, setData] = useState([]);
   let filteredUnfavData = [];
+
   useEffect(() => {
-    const newEle = [...data];
-    ImageData?.filter((element) => {
-      if (allFavImage.length ===0) {
-        newEle?.push(element);
+    allImage?.filter(el=>{
+      if(el.favourite===undefined){
+        data.push(el)
+        setData(data)
       }
-      return allFavImage?.filter((ele) => {
-        if (element.id !== ele.id) {
-          newEle?.push(element);
-        }
-      });
-    });
-    setData(newEle);
-  }, [ImageData]);
+    })
+  }, [allImage,data])
   filteredUnfavData = data?.filter((element) => {
     return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
   });

@@ -15,31 +15,21 @@ const suffix = (
     }}
   />
 );
-const Main = ({ filterTxt, filteredData,forceUpdate,setAllFavImage,allFavImage }) => {
-  const ImageData = useSelector((state) => state.allImage);
-  const favImgData = useSelector((state) => state.allFavImage);
-  const dataArray = filterTxt === "" ? ImageData.data : filteredData;
-
+const Main = ({ allImage, filterTxt }) => {
+  console.log("allImage", allImage);
+  var filteredData = [];
+  filteredData = allImage?.filter((element) => {
+    return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
+  });
+  const dataArray = filterTxt === "" ? allImage : filteredData;
   let newDataArray = null;
-  if (ImageData.loading) {
-    newDataArray = <Spinner />;
-  } else {
-    newDataArray = (
-      <div className={style.ImgDiv}>
-        {dataArray?.map((el) => {
-          return (
-            <ImageCard
-            setAllFavImage={setAllFavImage}
-            allFavImage={allFavImage}
-            // forceUpdate={forceUpdate}
-              key={el?.id}
-              element={el}
-            />
-          );
-        })}
-      </div>
-    );
-  }
+  newDataArray = (
+    <div className={style.ImgDiv}>
+      {dataArray?.map((el) => {
+        return <ImageCard allImage={allImage} key={el?.id} element={el} />;
+      })}
+    </div>
+  );
 
   return (
     <div>

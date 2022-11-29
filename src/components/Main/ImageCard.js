@@ -6,12 +6,16 @@ import { Card, notification } from "antd";
 import styles from "./ImageCard.module.css";
 // import Like from "./Like/Like";
 import { useDispatch, useSelector } from "react-redux";
-import { favouriteImage } from "../../store/action/favouriteAction";
+// import { favouriteImage } from "../../store/action/favouriteAction";
 import { HeartFilled, LikeFilled } from "@ant-design/icons";
-import { likeImage } from "../../store/action/likeAction";
-import { unfavouriteImage } from "../../store/action/unfavouriteAction";
-import { unlikeImage } from "../../store/action/unlikeAction";
-import axios from "axios";
+// import { likeImage } from "../../store/action/likeAction";
+import {
+  favouriteImage,
+  unfavouriteImage,
+  unlikeImage,
+  likeImage,
+} from "../../store/action/action";
+// import { unlikeImage } from "../../store/action/unlikeAction";
 const { Meta } = Card;
 
 function Tilt(props) {
@@ -25,24 +29,22 @@ function Tilt(props) {
   return <div ref={tilt} {...rest} />;
 }
 
-const ImageCard = ({ element,setAllFavImage,allFavImage }) => {
+const ImageCard = ({ element, allImage }) => {
+  console.log("element@@@@$$", element);
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
   const [favouriteData, setFavouriteData] = useState(element.favourite);
   const [allLikeData, setAllLikeData] = useState(element.like);
   const dispatch = useDispatch();
+  console.log("");
 
-  const favId = useSelector((state) => state.favourite.data);
-  const unfavId = useSelector((state) => state.unfavourite.data);
-  const likeStateData = useSelector((state) => state.like.data);
-  const favImgData = useSelector((state) => state.allFavImage.data);
-  const likeImgData = useSelector((state) => state.allLikeImage.data);
+  // const likeImgData = useSelector((state) => state.data);
 
   const onLikePost = async () => {
     setIsLiked(true);
-    dispatch(likeImage(element,setAllLikeData))
-    setLikeData(1); 
+    dispatch(likeImage(element, setAllLikeData));
+    setLikeData(1);
   };
   const onUnLikePost = async () => {
     setIsLiked(false);
@@ -50,32 +52,48 @@ const ImageCard = ({ element,setAllFavImage,allFavImage }) => {
     setLikeData(0);
   };
   const onFavouriteData = async () => {
+    dispatch(favouriteImage(element, setFavouriteData));
     setIsHeart(true);
-    dispatch(favouriteImage(element,setFavouriteData))
-    allFavImage.push(element)
   };
+  // useEffect(() => {
+  //   allFavImage?.filter((el) => {
+  //     console.log('el@@&&', el)
+  //     // return favImgData?.find((elem) => {
+  //     //   if (elem.id === el.id) {
+  //     //     allFavImage.push(el);
+  //     //     setAllFavImage(allFavImage);
+  //     //   }
+  //     // });
+  //   });
+  // }, [allFavImage]);
+
   const onUnFavouriteData = async () => {
     setIsHeart(false);
     dispatch(unfavouriteImage(favouriteData.id, element));
     setFavouriteData(element.favourite);
   };
 
-  useEffect(() => {
-    favImgData?.filter((ele) => {
-      if (ele.id === element.id) {
-        setIsHeart(true);
-        setFavouriteData(ele.favourite);
-      }
-    });
+  // useEffect(() => {
+  //   allImage.filter((ele) => {
+  //     if (ele.favourite!==undefined) {
+  //       console.log("ele@@##$$##", ele);
+  //       setIsHeart(true);
+  //     }
+  //   });
+  // }, [allImage,element]);
 
-    likeImgData?.map((elem) => {
-      if (elem.image_id === element.id) {
-        setIsLiked(true);
-        setAllLikeData(elem);
-        setLikeData(likeData + 1);
-      }
-    });
-  }, [favImgData, element.id, likeImgData]);
+  useEffect(() => {
+  if (element?.favourite) {
+    setIsHeart(true);
+  }
+    // likeImgData?.map((elem) => {
+    //   if (elem.image_id === element.id) {
+    //     setIsLiked(true);
+    //     setAllLikeData(elem);
+    //     setLikeData(likeData + 1);
+    //   }
+    // });
+  }, [element.favourite]);
 
   const options = {
     scale: 1,

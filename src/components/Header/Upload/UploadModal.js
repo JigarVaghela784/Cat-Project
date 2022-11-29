@@ -4,7 +4,7 @@ import { Modal } from "antd";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImage } from "../../../store/action/uploadAction";
+import { uploadImage } from "../../../store/action/action";
 import Loading from "../../Main/Loading/Loading";
 import "./UploadModal.modual.css";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,6 @@ const { Dragger } = Upload;
 const UploadModal = ({ open, setOpen, setDropDown,forceUpdate }) => {
   const [image, setImage] = useState("");
   const dispatch = useDispatch();
-  const error = useSelector((state) => state?.upload.error);
   const handleChange = (event) => {
     setImage(event.target.files[0]);
   };
@@ -24,7 +23,7 @@ const UploadModal = ({ open, setOpen, setDropDown,forceUpdate }) => {
     setOpen(false);
   };
 
-  const loading = useSelector((state) => state.upload.loading);
+  const loading = useSelector((state) => state.loading);
   let nmodal = null;
   if (loading) {
     nmodal = <>
