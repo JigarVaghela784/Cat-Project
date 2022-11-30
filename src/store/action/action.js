@@ -10,7 +10,7 @@ export const fetchImageStart = () => {
 export const fetchImageSuccess = (data) => {
   return {
     type: actionType.FETCH_IMAGE_SUCCESS,
-    data:data,
+    data: data,
   };
 };
 
@@ -19,7 +19,6 @@ export const fetchImageFail = (error) => {
     type: actionType.FETCH_IMAGE_FAIL,
     error,
   };
-
 };
 
 ////////////////////////////////////
@@ -33,7 +32,7 @@ export const fetchFavouriteImageStart = () => {
 export const fetchFavouriteImageSuccess = (data) => {
   return {
     type: actionType.FETCH_FAVOURITE_IMAGE_SUCCESS,
-    data:data,
+    data: data,
   };
 };
 
@@ -55,7 +54,7 @@ export const fetchLikeImageStart = () => {
 export const fetchLikeImageSuccess = (data) => {
   return {
     type: actionType.FETCH_LIKE_IMAGE_SUCCESS,
-    data:data,
+    data: data,
   };
 };
 
@@ -68,17 +67,17 @@ export const fetchLikeImageFail = (error) => {
 
 /////////////////////////////////////////////////
 
-
 export const favouriteImageStart = () => {
   return {
     type: actionType.FAVOURITE_IMAGE_START,
   };
 };
 
-export const favouriteImageSuccess = (data) => {
+export const favouriteImageSuccess = (data, favData) => {
   return {
     type: actionType.FAVOURITE_IMAGE_SUCCESS,
     data: data,
+    favData: favData,
   };
 };
 
@@ -90,7 +89,6 @@ export const favouriteImageFail = (error) => {
 };
 
 /////////////////////////////////////////////////
-
 
 export const likeImageStart = () => {
   return {
@@ -113,18 +111,17 @@ export const likeImageFail = (error) => {
 
 /////////////////////////////////////////////////
 
-
 export const unfavouriteImageStart = () => {
   return {
     type: actionType.UNFAVOURITE_IMAGE_START,
   };
 };
 
-export const unfavouriteImageSuccess = (data, resData) => {
+export const unfavouriteImageSuccess = (data, element) => {
   return {
     type: actionType.UNFAVOURITE_IMAGE_SUCCESS,
-    data:data,
-    resData,
+    data: data,
+    unFavData: element,
   };
 };
 
@@ -136,7 +133,6 @@ export const unfavouriteImageFail = (error) => {
 };
 
 /////////////////////////////////////////////////
-
 
 export const unlikeImageStart = () => {
   return {
@@ -159,7 +155,6 @@ export const unlikeImageFail = (error) => {
 
 /////////////////////////////////////////////////
 
-
 export const uploadImageStart = () => {
   return {
     type: actionType.UPLOAD_IMAGE_START,
@@ -180,7 +175,6 @@ export const uploadImageFail = (error) => {
 
 /////////////////////////////////////////////////
 
-
 export const fetchImage = () => {
   return async (dispatch) => {
     dispatch(fetchImageStart());
@@ -190,21 +184,17 @@ export const fetchImage = () => {
       const response = await axios.get(
         "https://api.thecatapi.com/v1/images?limit=5"
       );
-      //   notification["success"]({
-      //     message: "Fetch  Image Successfully!!",
-      //   });
-      const mapped=response.data.map((image)=>{
-          return{
-            id:image.id,
-            original_filename:image.original_filename,
-            url:image.url,
-            created_at:image.created_at,
-            favourite:image.favourite,
-            like:image.like,
-            image,
-          }
-      })
-      console.log('mapped@@', mapped)
+      const mapped = response.data.map((image) => {
+        return {
+          id: image.id,
+          original_filename: image.original_filename,
+          url: image.url,
+          created_at: image.created_at,
+          favourite: image.favourite,
+          like: image.like,
+          image,
+        };
+      });
       // dispatch(fetchImageSuccess(response.data));
       dispatch(fetchImageSuccess(mapped));
     } catch (error) {
@@ -218,7 +208,6 @@ export const fetchImage = () => {
 
 /////////////////////////////////////////////////
 
-
 export const fetchFavouriteImage = () => {
   return async (dispatch) => {
     dispatch(fetchFavouriteImageStart());
@@ -228,26 +217,23 @@ export const fetchFavouriteImage = () => {
       const res = await axios.get(
         "https://api.thecatapi.com/v1/favourites?order=DESC"
       );
-      const mapped = res.data.map((favourite) => {
-        return {
-          id: favourite.image.id,
-          url: favourite.image.url,
-          favourite,
-        };
-      });
+      // const mapped = res.data.map((favourite) => {
+      //   return {
+      //     id: favourite.image.id,
+      //     url: favourite.image.url,
+      //     favourite,
+      //   };
+      // });
 
-      dispatch(fetchFavouriteImageSuccess(res.data  ));
+      dispatch(fetchFavouriteImageSuccess(res.data));
       // dispatch(fetchFavouriteImageSuccess(mapped));
     } catch (error) {
-      console.log("error", error);
-
       dispatch(fetchFavouriteImageFail(error));
     }
   };
 };
 
 /////////////////////////////////////////////////
-
 
 export const fetchLikeImage = () => {
   return async (dispatch) => {
@@ -265,17 +251,9 @@ export const fetchLikeImage = () => {
           body: payLoad,
         }
       );
-      const mapped = res.data.map((like) => {
-        return {
-          id: like.image.id,
-          url: like.image.url,
-          like,
-        };
-      });
+
       dispatch(fetchLikeImageSuccess(res.data));
-      // dispatch(fetchLikeImageSuccess(mapped));
     } catch (error) {
-      console.log("error", error);
       dispatch(fetchLikeImageFail(error));
     }
   };
@@ -283,8 +261,7 @@ export const fetchLikeImage = () => {
 
 /////////////////////////////////////////////////
 
-
-export const favouriteImage = (element, setAllFavImage) => {
+export const favouriteImage = (element) => {
   return async (dispatch) => {
     dispatch(favouriteImageStart());
     try {
@@ -296,8 +273,9 @@ export const favouriteImage = (element, setAllFavImage) => {
       notification["success"]({
         message: "Image Like Successfully!!",
       });
-      dispatch(favouriteImageSuccess(res.data));
-      setAllFavImage(res.data);
+      dispatch(favouriteImageSuccess(res.data, element));
+      // setAllFavImage(res.data);
+      console.log("element@@&&##", element);
     } catch (error) {
       notification["error"]({
         message: error.response.data,
@@ -309,8 +287,7 @@ export const favouriteImage = (element, setAllFavImage) => {
 
 /////////////////////////////////////////////////
 
-
-export const likeImage = (element, setAllLikeData) => {
+export const likeImage = (element, setLikeData) => {
   return async (dispatch) => {
     dispatch(likeImageStart());
     try {
@@ -329,10 +306,11 @@ export const likeImage = (element, setAllLikeData) => {
         message: "Image Vote Successfully!!",
       });
       dispatch(likeImageSuccess(response.data));
-      setAllLikeData(response.data);
+      // setAllLikeData(response.data);
+      setLikeData(response.data.value);
     } catch (error) {
       notification["error"]({
-        message: error,
+        message: error.response,
       });
       dispatch(likeImageFail(error));
     }
@@ -341,61 +319,64 @@ export const likeImage = (element, setAllLikeData) => {
 
 /////////////////////////////////////////////////
 
-
-export const unfavouriteImage = (favourite_id, element) => {
+export const unfavouriteImage = (element) => {
+  console.log("element@@!!@@", element.favourite.id);
   return async (dispatch) => {
     dispatch(unfavouriteImageStart());
     try {
       axios.defaults.headers.common["x-api-key"] =
         "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
       const res = await axios.delete(
-        `https://api.thecatapi.com/v1/favourites/${favourite_id}`
+        `https://api.thecatapi.com/v1/favourites/${element.favourite.id}`
       );
-      let resData = [];
       notification["success"]({
         message: "Unfavourite!!",
       });
-      dispatch(unfavouriteImageSuccess(res, resData));
-      console.log("res", res);
+      element.favourite = undefined;
+      dispatch(unfavouriteImageSuccess(res.data, element));
+      console.log("element@#!!!", element);
     } catch (error) {
       notification["error"]({
-        message: error.response.data,
+        message: error.response,
       });
       dispatch(unfavouriteImageFail());
-      console.log("error", error);
     }
   };
 };
 
 /////////////////////////////////////////////////
 
-
-export const unlikeImage = (vote_id) => {
+export const unlikeImage = (element, setLikeData) => {
   return async (dispatch) => {
+    const payLoad = {
+      image_id: element.id,
+      sub_id: "user_123",
+      value: 0,
+    };
     dispatch(unlikeImageStart());
     try {
       axios.defaults.headers.common["x-api-key"] =
         "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
       const response = await axios.delete(
-        `https://api.thecatapi.com/v1/votes/${vote_id}`
+        `https://api.thecatapi.com/v1/votes/${element.like.id}`,
+        payLoad
       );
-      // notification["success"]({
-      //   message: "Image Unliked Successfully!!",
-      // });
-      dispatch(unlikeImageSuccess(response.data.value));
-      console.log("response", response);
+      notification["success"]({
+        message: "Image Unvote Successfully!!",
+      });
+      dispatch(unlikeImageSuccess(response.data));
+      setLikeData(payLoad.value);
+      // console.log("response.data.value", response.data);
     } catch (error) {
-      // notification["error"]({
-      //   message: error.response.data,
-      // });
+      notification["error"]({
+        message: error.response,
+      });
       dispatch(unlikeImageFail(error));
-      console.log("error", error);
     }
   };
 };
 
 /////////////////////////////////////////////////
-
 
 export const uploadImage = (image) => {
   return async (dispatch) => {
@@ -413,11 +394,13 @@ export const uploadImage = (image) => {
         message: "Image Uploaded Successfully!!",
       });
       dispatch(uploadImageSuccess(response.data));
+      // forceUpdate();
+      console.log("responseData", response.data);
     } catch (error) {
       notification["error"]({
-        message: error.response,
+        message: error,
       });
-      dispatch(uploadImageFail(error.response.data));
+      dispatch(uploadImageFail(error));
     }
   };
 };

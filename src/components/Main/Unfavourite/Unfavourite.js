@@ -3,28 +3,33 @@ import style from "../Cat_image.module.css";
 import ImageCard from "../ImageCard";
 
 const Unfavourite = ({ allImage, filterTxt }) => {
-  const [data, setData] = useState([]);
   let filteredUnfavData = [];
-
+  const [data, setData] = useState([]);
+  const [unfavAllData, setUnfavAllData] = useState();
   useEffect(() => {
-    allImage?.filter(el=>{
-      if(el.favourite===undefined){
-        data.push(el)
-        setData(data)
+    let data = [];
+    allImage?.filter((el) => {
+      if (el.favourite === undefined) {
+        console.log("el", el);
+        data?.push(el);
+        console.log("data", data);
+        setUnfavAllData( data);
       }
-    })
-  }, [allImage,data])
-  filteredUnfavData = data?.filter((element) => {
+    });
+  }, []);
+  filteredUnfavData = unfavAllData?.filter((element) => {
     return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
   });
-  const dataArray = filterTxt === "" ? data : filteredUnfavData;
+
+  const dataArray = filterTxt === "" ? unfavAllData : filteredUnfavData;
+  console.log("favAllData@@unfav", dataArray);
   return (
     <div>
       <div className={style.ImgDiv}>
-        {dataArray?.map((element) => {
-          console.log("data1234", element);
-          return <ImageCard key={element.id} element={element} />;
-        })}
+        {dataArray &&
+          dataArray?.map((element) => {
+            return <ImageCard key={element.id} element={element} />;
+          })}
       </div>
     </div>
   );

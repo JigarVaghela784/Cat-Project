@@ -20,7 +20,7 @@
   100%{background-position:100% 0%}
 } */
 body {
-	background: linear-gradient(45deg,#d15c5c, #d77474,#63e1c4, #23d5ab);
+	background: linear-gradient(45deg,#7b4397, #ffd89b,#43cea2, #19547b);
 	background-size: 400% 400%;
 	animation: gradient 10s ease infinite;
 	height: 100vh;

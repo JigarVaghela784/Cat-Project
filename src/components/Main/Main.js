@@ -15,26 +15,26 @@ const suffix = (
     }}
   />
 );
-const Main = ({ allImage, filterTxt }) => {
-  console.log("allImage", allImage);
+const Main = ({ allImage, filterTxt, isImage }) => {
   var filteredData = [];
   filteredData = allImage?.filter((element) => {
     return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
   });
   const dataArray = filterTxt === "" ? allImage : filteredData;
-  let newDataArray = null;
-  newDataArray = (
-    <div className={style.ImgDiv}>
-      {dataArray?.map((el) => {
-        return <ImageCard allImage={allImage} key={el?.id} element={el} />;
-      })}
-    </div>
-  );
+  let newDataArray = <Spinner />;
+  if (isImage) {
+    newDataArray = (
+      <div className={style.ImgDiv}>
+        {dataArray?.map((el) => {
+          return <ImageCard allImage={allImage} key={el?.id} element={el} />;
+        })}
+      </div>
+    );
+  }
 
   return (
     <div>
       {newDataArray}
-      {/* {open && <UploadModal open={open} setOpen={setOpen} />} */}
     </div>
   );
 };

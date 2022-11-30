@@ -12,102 +12,89 @@ import {
   fetchFavouriteImage,
   fetchLikeImage,
 } from "./store/action/action";
-// import { fetchFavouriteImage } from "./store/action/action";
-// import { fetchLikeImage } from "./store/action/allLikeAction";
-
 function App() {
   const [allImage, setAllImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [dropDown, setDropDown] = useState(0);
   const [filterTxt, setFilterTxt] = useState("");
-  const [allFavImage, setAllFavImage] = useState([]);
   const [isImage, setIsImage] = useState(false);
+  // const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const imageData = useSelector((state) => state);
-  const favImgData = useSelector((state) => state.favData);
   const dispatch = useDispatch();
   useEffect(() => {
-    const allData = async () => {
-      await dispatch(fetchImage());
-      await dispatch(fetchFavouriteImage());
-      await dispatch(fetchLikeImage());
-      setIsImage(true);
-    };
-    allData();
+    if (imageData.fetchData === null) {
+      const allData = async () => {
+        await dispatch(fetchImage());
+        await dispatch(fetchFavouriteImage());
+        await dispatch(fetchLikeImage());
+        setIsImage(true);
+      };
+      allData();
+    }
+  // }, [ignored]);
   }, []);
-
   useEffect(() => {
-    console.log("imageData.fetchData", imageData.fetchData);
-    // allImage.push(imageData.fetchData)
     setAllImage(imageData?.fetchData);
-  }, [imageData.fetchData]);
+  }, [imageData.fetchData, open]);
 
   useEffect(() => {
     allImage?.map((element, index) => {
       imageData.fetchFavData?.map((ele) => {
         if (ele.image_id === element.id) {
-          allImage[index].favourite= ele;
+          allImage[index].favourite = ele;
         }
       });
     });
-  }, [imageData.fetchFavData])
+    allImage?.map((element, index) => {
+      imageData.fetchLikeData?.map((ele) => {
+        if (ele.image_id === element.id) {
+          allImage[index].like = ele;
+        }
+      });
+    });
+  }, [imageData.fetchFavData, imageData.fetchLikeData]);
+  useEffect(() => {
+    allImage?.filter((element, index) => {
+      if (element?.id === imageData.favElData?.id) {
+        allImage[index].favourite = imageData.favData;
+      }
+    });
+  }, [imageData.favElData, allImage]);
+  console.log("allImage@@!!", allImage);
+  // useEffect(() => {
+  //   console.log("imageData111!", imageData);
+  //   allImage?.filter((element, index) => {
+  //     if (element?.id === imageData.unFavData?.id) {
+  //       console.log('element.id!!@@', allImage[index].favourite)
+  //       allImage[index].favourite = undefined;
+  //     }
+  //   });
+  // }, [imageData.unFavData,allImage]);
 
-
-  var filteredFavData = [];
   const handleChange = (value) => {
     setDropDown(value);
     setFilterTxt("");
+    console.log("filterTxt", filterTxt);
   };
+
   const onSearch = (e) => {
     let val = e.target.value;
     setFilterTxt(val);
   };
-  // useEffect(() => {
-  //   ImageData?.filter((el) => {
-  //     return favImgData?.find((elem) => {
-  //       if (elem.id === el.id) {
-  //         allFavImage.push(el);
-  //         setAllFavImage(allFavImage);
-  //       }
-  //     });
-  //   });
-  // }, [favImgData, ImageData]);
   const handleDropDown = () => {
     switch (dropDown) {
       case 0:
         return (
-          <Main
-            // open={open}
-            // setOpen={setOpen}
-            filterTxt={filterTxt}
-            // filteredData={filteredData}
-            allImage={allImage}
-          />
+          <Main isImage={isImage} filterTxt={filterTxt} allImage={allImage} />
         );
       case 1:
-        return (
-          <Favourite
-            allImage={allImage}
-            filterTxt={filterTxt}
-            filteredData={filteredFavData}
-            setAllFavImage={setAllFavImage}
-          />
-        );
+        return <Favourite allImage={allImage} filterTxt={filterTxt} />;
       case 2:
-        return (
-          <Unfavourite
-            ImageData={ImageData}
-            filterTxt={filterTxt}
-            allFavImage={allFavImage}
-          />
-        );
+        return <Unfavourite allImage={allImage} filterTxt={filterTxt} />;
       default:
         <Main />;
     }
   };
-
-  // filteredFavData = allFavImage?.filter((element) => {
-  //   return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
-  // });
 
   return (
     <div className="App">
@@ -119,6 +106,8 @@ function App() {
       />
       {handleDropDown()}
       <UploadModal
+        allImage={allImage}
+        setAllImage={setAllImage}
         open={open}
         setOpen={setOpen}
         setDropDown={setDropDown}

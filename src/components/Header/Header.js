@@ -40,15 +40,6 @@ const Navigation = ({ open, setOpen, onSearch, handleChange }) => {
             }}
           />
         {/* </Space> */}
-        {/* <select onChange={handleChange} style={{padding: "0.5%",marginRight:" 2%",borderRadius: "10px"}}>
-        {items.map((ele, index) => {
-          return (
-            <option value={ele.key} key={index}>
-              {ele.label}
-            </option>
-          );
-        })}
-      </select> */}
         <Select onChange={handleChange} defaultValue={0}>
           {items.map((ele, index) => {
             return (

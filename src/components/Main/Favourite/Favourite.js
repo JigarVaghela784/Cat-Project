@@ -3,7 +3,7 @@ import ImageCard from "../ImageCard";
 import style from "../Cat_image.module.css";
 import Spinner from "../Spinner";
 
-const Favourite = ({ allImage, filteredFavData, filterTxt }) => {
+const Favourite = ({ allImage, filterTxt }) => {
   // const intersection = dataArray.filter((element) =>
   //   allFavImage.includes(element)
   // );
@@ -13,24 +13,28 @@ const Favourite = ({ allImage, filteredFavData, filterTxt }) => {
   //     setAllFavImage(dataArray.filter(image => image.favourite?.id !== favouriteId))
   //   }
   // console.log("intersection", intersection);
-  const [favAllData, setFavAllData] = useState([])
+  var filteredFavData = [];
+  const [favAllData, setFavAllData] = useState([]);
   useEffect(() => {
-    allImage?.filter(el=>{
-      if(el.favourite){
-        console.log('el', el)
-        favAllData.push(el)
-        setFavAllData(favAllData)
+    let data = [];
+    allImage?.filter((el) => {
+      if (el.favourite) {
+        data?.push(el);
+        setFavAllData(data);
       }
-    })
-  }, [allImage])
-  console.log('favAllData', favAllData)
+    });
+  }, [allImage]);
+  filteredFavData = favAllData?.filter((element) => {
+    return element.id?.toLowerCase().includes(filterTxt?.toLowerCase());
+  });
   const dataArray = filterTxt === "" ? favAllData : filteredFavData;
   return (
     <div>
       <div className={style.ImgDiv}>
-        {dataArray&&dataArray?.map((el) => {
-          return <ImageCard key={el?.id} element={el} />;
-        })}
+        {dataArray &&
+          dataArray?.map((el) => {
+            return <ImageCard key={el?.id} element={el} />;
+          })}
       </div>
     </div>
   );

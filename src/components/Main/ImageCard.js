@@ -30,70 +30,46 @@ function Tilt(props) {
 }
 
 const ImageCard = ({ element, allImage }) => {
-  console.log("element@@@@$$", element);
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
-  const [favouriteData, setFavouriteData] = useState(element.favourite);
-  const [allLikeData, setAllLikeData] = useState(element.like);
+  // const [favouriteData, setFavouriteData] = useState(element.favourite);
+  // const [allLikeData, setAllLikeData] = useState(element.like);
   const dispatch = useDispatch();
-  console.log("");
 
   // const likeImgData = useSelector((state) => state.data);
+  useEffect(() => {
+    if (element?.favourite) {
+      setIsHeart(true);
+    }
+    if(element?.favourite===undefined){
+      setIsHeart(false)
+    }
+    if (element?.like) {
+      setIsLiked(true);
+      setLikeData(element.like.value);
+    }
+  }, [element.favourite, element.like]);
+
+  
 
   const onLikePost = async () => {
     setIsLiked(true);
-    dispatch(likeImage(element, setAllLikeData));
-    setLikeData(1);
+    dispatch(likeImage(element, setLikeData));
   };
   const onUnLikePost = async () => {
     setIsLiked(false);
-    dispatch(unlikeImage(allLikeData?.id));
-    setLikeData(0);
+    dispatch(unlikeImage(element,setLikeData));
   };
   const onFavouriteData = async () => {
-    dispatch(favouriteImage(element, setFavouriteData));
+    dispatch(favouriteImage(element));
     setIsHeart(true);
   };
-  // useEffect(() => {
-  //   allFavImage?.filter((el) => {
-  //     console.log('el@@&&', el)
-  //     // return favImgData?.find((elem) => {
-  //     //   if (elem.id === el.id) {
-  //     //     allFavImage.push(el);
-  //     //     setAllFavImage(allFavImage);
-  //     //   }
-  //     // });
-  //   });
-  // }, [allFavImage]);
 
   const onUnFavouriteData = async () => {
     setIsHeart(false);
-    dispatch(unfavouriteImage(favouriteData.id, element));
-    setFavouriteData(element.favourite);
+    dispatch(unfavouriteImage(element));
   };
-
-  // useEffect(() => {
-  //   allImage.filter((ele) => {
-  //     if (ele.favourite!==undefined) {
-  //       console.log("ele@@##$$##", ele);
-  //       setIsHeart(true);
-  //     }
-  //   });
-  // }, [allImage,element]);
-
-  useEffect(() => {
-  if (element?.favourite) {
-    setIsHeart(true);
-  }
-    // likeImgData?.map((elem) => {
-    //   if (elem.image_id === element.id) {
-    //     setIsLiked(true);
-    //     setAllLikeData(elem);
-    //     setLikeData(likeData + 1);
-    //   }
-    // });
-  }, [element.favourite]);
 
   const options = {
     scale: 1,
