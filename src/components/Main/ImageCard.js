@@ -1,21 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-// import Cat_Image from "./Main";
 import VanillaTilt from "vanilla-tilt";
-import { Card, notification } from "antd";
-// import Favourite from "./Favourite/Favourite";
+import { Card } from "antd";
 import styles from "./ImageCard.module.css";
-// import Like from "./Like/Like";
-import { useDispatch, useSelector } from "react-redux";
-// import { favouriteImage } from "../../store/action/favouriteAction";
+import { useDispatch } from "react-redux";
 import { HeartFilled, LikeFilled } from "@ant-design/icons";
-// import { likeImage } from "../../store/action/likeAction";
 import {
   favouriteImage,
   unfavouriteImage,
   unlikeImage,
   likeImage,
-} from "../../store/action/action";
-// import { unlikeImage } from "../../store/action/unlikeAction";
+} from "../../store/action";
 const { Meta } = Card;
 
 function Tilt(props) {
@@ -33,44 +27,42 @@ const ImageCard = ({ element, allImage }) => {
   const [isLike, setIsLiked] = useState(false);
   const [isHeart, setIsHeart] = useState(false);
   const [likeData, setLikeData] = useState(0);
-  // const [favouriteData, setFavouriteData] = useState(element.favourite);
-  // const [allLikeData, setAllLikeData] = useState(element.like);
   const dispatch = useDispatch();
 
-  // const likeImgData = useSelector((state) => state.data);
   useEffect(() => {
-    if (element?.favourite) {
+    if (element?.favourite !== undefined) {
       setIsHeart(true);
+    } else if (element?.favourite === undefined) {
+      setIsHeart(false);
     }
-    if(element?.favourite===undefined){
-      setIsHeart(false)
-    }
-    if (element?.like) {
+    if (element.like !== undefined) {
       setIsLiked(true);
-      setLikeData(element.like.value);
+      setLikeData(1);
+    } else if (element.like === undefined) {
+      setIsLiked(false);
+      setLikeData(0);
     }
   }, [element.favourite, element.like]);
 
-  
-
   const onLikePost = async () => {
     setIsLiked(true);
-    dispatch(likeImage(element, setLikeData));
+    setLikeData(1);
+    dispatch(likeImage(element));
   };
   const onUnLikePost = async () => {
+    dispatch(unlikeImage(element));
     setIsLiked(false);
-    dispatch(unlikeImage(element,setLikeData));
+    setLikeData(0);
   };
   const onFavouriteData = async () => {
-    dispatch(favouriteImage(element));
     setIsHeart(true);
+    dispatch(favouriteImage(element));
   };
 
   const onUnFavouriteData = async () => {
     setIsHeart(false);
     dispatch(unfavouriteImage(element));
   };
-
   const options = {
     scale: 1,
     speed: 10000,

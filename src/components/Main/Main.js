@@ -1,20 +1,7 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import style from "./Cat_image.module.css";
 import ImageCard from "./ImageCard";
-import { AudioOutlined } from "@ant-design/icons";
-import { Input, Space } from "antd";
-import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./Spinner";
-const { Search } = Input;
-const suffix = (
-  <AudioOutlined
-    style={{
-      fontSize: 16,
-      color: "#1890ff",
-    }}
-  />
-);
 const Main = ({ allImage, filterTxt, isImage }) => {
   var filteredData = [];
   filteredData = allImage?.filter((element) => {
@@ -23,19 +10,23 @@ const Main = ({ allImage, filterTxt, isImage }) => {
   const dataArray = filterTxt === "" ? allImage : filteredData;
   let newDataArray = <Spinner />;
   if (isImage) {
-    newDataArray = (
-      <div className={style.ImgDiv}>
-        {dataArray?.map((el) => {
-          return <ImageCard allImage={allImage} key={el?.id} element={el} />;
-        })}
-      </div>
-    );
+    newDataArray =
+      dataArray?.length !== 0 ? (
+        <div className={style.ImgDiv}>
+          {dataArray &&
+            dataArray?.map((el) => {
+              return (
+                <ImageCard allImage={allImage} key={el?.id} element={el} />
+              );
+            })}
+        </div>
+      ) : (
+        <div>
+          <h1 style={{ color: "red" }}>No Data Found!!</h1>
+        </div>
+      );
   }
 
-  return (
-    <div>
-      {newDataArray}
-    </div>
-  );
+  return <div>{newDataArray}</div>;
 };
 export default Main;

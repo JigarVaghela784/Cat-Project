@@ -21,8 +21,8 @@
 } */
 body {
 	background: linear-gradient(45deg,#7b4397, #ffd89b,#43cea2, #19547b);
-	background-size: 400% 400%;
-	animation: gradient 10s ease infinite;
+	background-size: 1000% 1000%;
+	animation: gradient 15  s ease infinite;
 	height: 100vh;
 }
 

@@ -9,19 +9,8 @@ import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { BrowserRouter } from "react-router-dom";
-import reducer from "./store/reducer/reducer";
+import reducer from "./store/reducer";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// const rootReducer = combineReducers({
-  // allImage: allImageReducer,
-  // upload: uploadReducer,
-  // favourite: FavouriteReducer,
-  // unfavourite: UnfavouriteReducer,
-  // unlike: UnlikeReducer,
-  // like: likeReducer,
-  // allFavImage: allFavImage,
-  // allLikeImage: allLikeImage,
-// });
 
 const store = createStore(
   reducer,
@@ -32,9 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      {/* <React.StrictMode> */}
       <App />
-      {/* </React.StrictMode> */}
     </BrowserRouter>
   </Provider>
 );

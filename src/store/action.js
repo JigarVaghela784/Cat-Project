@@ -96,10 +96,11 @@ export const likeImageStart = () => {
   };
 };
 
-export const likeImageSuccess = (data) => {
+export const likeImageSuccess = (data, likeData) => {
   return {
     type: actionType.LIKE_IMAGE_SUCCESS,
     data: data,
+    likeData: likeData,
   };
 };
 export const likeImageFail = (error) => {
@@ -117,11 +118,10 @@ export const unfavouriteImageStart = () => {
   };
 };
 
-export const unfavouriteImageSuccess = (data, element) => {
+export const unfavouriteImageSuccess = (data) => {
   return {
     type: actionType.UNFAVOURITE_IMAGE_SUCCESS,
     data: data,
-    unFavData: element,
   };
 };
 
@@ -161,6 +161,7 @@ export const uploadImageStart = () => {
   };
 };
 export const uploadImageSuccess = (data) => {
+  console.log('data', data)
   return {
     type: actionType.UPLOAD_IMAGE_SUCCESS,
     data: data,
@@ -217,16 +218,8 @@ export const fetchFavouriteImage = () => {
       const res = await axios.get(
         "https://api.thecatapi.com/v1/favourites?order=DESC"
       );
-      // const mapped = res.data.map((favourite) => {
-      //   return {
-      //     id: favourite.image.id,
-      //     url: favourite.image.url,
-      //     favourite,
-      //   };
-      // });
 
       dispatch(fetchFavouriteImageSuccess(res.data));
-      // dispatch(fetchFavouriteImageSuccess(mapped));
     } catch (error) {
       dispatch(fetchFavouriteImageFail(error));
     }
@@ -274,11 +267,9 @@ export const favouriteImage = (element) => {
         message: "Image Like Successfully!!",
       });
       dispatch(favouriteImageSuccess(res.data, element));
-      // setAllFavImage(res.data);
-      console.log("element@@&&##", element);
     } catch (error) {
       notification["error"]({
-        message: error.response.data,
+        message: error,
       });
       dispatch(favouriteImageFail(error));
     }
@@ -287,7 +278,7 @@ export const favouriteImage = (element) => {
 
 /////////////////////////////////////////////////
 
-export const likeImage = (element, setLikeData) => {
+export const likeImage = (element) => {
   return async (dispatch) => {
     dispatch(likeImageStart());
     try {
@@ -305,9 +296,8 @@ export const likeImage = (element, setLikeData) => {
       notification["success"]({
         message: "Image Vote Successfully!!",
       });
-      dispatch(likeImageSuccess(response.data));
-      // setAllLikeData(response.data);
-      setLikeData(response.data.value);
+      dispatch(likeImageSuccess(response.data, element));
+      // setLikeData(response.data.value);
     } catch (error) {
       notification["error"]({
         message: error.response,
@@ -320,7 +310,6 @@ export const likeImage = (element, setLikeData) => {
 /////////////////////////////////////////////////
 
 export const unfavouriteImage = (element) => {
-  console.log("element@@!!@@", element.favourite.id);
   return async (dispatch) => {
     dispatch(unfavouriteImageStart());
     try {
@@ -333,8 +322,7 @@ export const unfavouriteImage = (element) => {
         message: "Unfavourite!!",
       });
       element.favourite = undefined;
-      dispatch(unfavouriteImageSuccess(res.data, element));
-      console.log("element@#!!!", element);
+      dispatch(unfavouriteImageSuccess(res.data));
     } catch (error) {
       notification["error"]({
         message: error.response,
@@ -346,26 +334,26 @@ export const unfavouriteImage = (element) => {
 
 /////////////////////////////////////////////////
 
-export const unlikeImage = (element, setLikeData) => {
+export const unlikeImage = (element) => {
   return async (dispatch) => {
-    const payLoad = {
-      image_id: element.id,
-      sub_id: "user_123",
-      value: 0,
-    };
+    // const payLoad = {
+    //   image_id: element.id,
+    //   sub_id: "user_123",
+    //   value: 0,
+    // };
     dispatch(unlikeImageStart());
     try {
       axios.defaults.headers.common["x-api-key"] =
         "live_yb1lC6VB3xY0P1aLH36fW4kI5ApozP5NMZNoZ80e1Xai8lcMcpB9lZw0dDqUuKRM";
       const response = await axios.delete(
-        `https://api.thecatapi.com/v1/votes/${element.like.id}`,
-        payLoad
+        `https://api.thecatapi.com/v1/votes/${element.like?.id}`
       );
       notification["success"]({
         message: "Image Unvote Successfully!!",
       });
+      element.like = undefined;
       dispatch(unlikeImageSuccess(response.data));
-      setLikeData(payLoad.value);
+      // setLikeData(payLoad.value);
       // console.log("response.data.value", response.data);
     } catch (error) {
       notification["error"]({
@@ -393,9 +381,8 @@ export const uploadImage = (image) => {
       notification["success"]({
         message: "Image Uploaded Successfully!!",
       });
-      dispatch(uploadImageSuccess(response.data));
       // forceUpdate();
-      console.log("responseData", response.data);
+      dispatch(uploadImageSuccess(response.data));
     } catch (error) {
       notification["error"]({
         message: error,

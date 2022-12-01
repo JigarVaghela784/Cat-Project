@@ -1,12 +1,13 @@
-import * as actionTypes from "../action/actionType";
+import * as actionTypes from "./actionType";
 const initialState = {
-  uploadData:null,
+  uploadData: null,
   fetchData: null,
   fetchLikeData: null,
   fetchFavData: null,
   favData: null,
-  favElData:null,
-  unFavData:null,
+  favElData: null,
+  likeData: null,
+  likeElData: null,
   error: null,
   loading: false,
 };
@@ -26,7 +27,6 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.FETCH_IMAGE_SUCCESS:
-      console.log("data@@", action.data);
       return {
         ...state,
         fetchData: action.data,
@@ -84,10 +84,13 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.FAVOURITE_IMAGE_SUCCESS:
+      // state.favData.push(action.data);
+      // state.favElData.push(action.favData)
       return {
         ...state,
         favData: action.data,
-        favElData:action.favData,
+        // favElData:state.favElData,
+        favElData: action.favData,
         loading: false,
       };
     case actionTypes.LIKE_IMAGE_START:
@@ -105,7 +108,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.LIKE_IMAGE_SUCCESS:
       return {
         ...state,
-        data: action.data,
+        likeData: action.data,
+        likeElData: action.likeData,
         loading: false,
       };
     case actionTypes.UNFAVOURITE_IMAGE_START:
@@ -122,11 +126,9 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.UNFAVOURITE_IMAGE_SUCCESS:
-      console.log('action@#!!@@', action)
       return {
         ...state,
         data: action.data,
-        unFavData:action.unFavData,
         loading: false,
       };
     case actionTypes.UNLIKE_IMAGE_START:
@@ -148,7 +150,6 @@ const reducer = (state = initialState, action) => {
         loading: false,
       };
     case actionTypes.UPLOAD_IMAGE_START:
-     
       return {
         ...state,
         error: null,

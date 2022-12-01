@@ -1,18 +1,9 @@
 import { Button,Select } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import style from "./Header.module.css";
-import { AudioOutlined } from "@ant-design/icons";
-
-import { Input, Space } from "antd";
+import { Input } from "antd";
 const { Search } = Input;
-const suffix = (
-  <AudioOutlined
-    style={{
-      fontSize: 19,
-      color: "#1890ff",
-    }}
-  />
-);
+
 const items = [
   {
     label: "All",
@@ -27,7 +18,7 @@ const items = [
     key: 2,
   },
 ];
-const Navigation = ({ open, setOpen, onSearch, handleChange }) => {
+const Navigation = ({ setOpen, onSearch, handleChange }) => {
   return (
     <>
       <div className={style.Header}>

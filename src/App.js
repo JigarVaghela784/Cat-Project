@@ -1,7 +1,6 @@
 import "./App.css";
 import Main from "./components/Main/Main";
 import Favourite from "./components/Main/Favourite/Favourite";
-import Like from "./components/Main/Like/Like";
 import Unfavourite from "./components/Main/Unfavourite/Unfavourite";
 import { useEffect, useReducer, useState } from "react";
 import Navigation from "./components/Header/Header";
@@ -11,28 +10,28 @@ import {
   fetchImage,
   fetchFavouriteImage,
   fetchLikeImage,
-} from "./store/action/action";
+} from "./store/action";
 function App() {
   const [allImage, setAllImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [dropDown, setDropDown] = useState(0);
   const [filterTxt, setFilterTxt] = useState("");
   const [isImage, setIsImage] = useState(false);
-  // const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const imageData = useSelector((state) => state);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (imageData.fetchData === null) {
-      const allData = async () => {
-        await dispatch(fetchImage());
+    const allData = async () => {
+      await dispatch(fetchImage());
+      if (imageData.fetchData === null) {
         await dispatch(fetchFavouriteImage());
         await dispatch(fetchLikeImage());
-        setIsImage(true);
-      };
-      allData();
-    }
+      }
+      setIsImage(true);
+    };
+    allData();
   // }, [ignored]);
-  }, []);
+  },[imageData.uploadData ])
   useEffect(() => {
     setAllImage(imageData?.fetchData);
   }, [imageData.fetchData, open]);
@@ -55,26 +54,34 @@ function App() {
   }, [imageData.fetchFavData, imageData.fetchLikeData]);
   useEffect(() => {
     allImage?.filter((element, index) => {
-      if (element?.id === imageData.favElData?.id) {
+      if (element?.id === imageData?.favElData?.id) {
         allImage[index].favourite = imageData.favData;
+        imageData.favData = null;
+        imageData.favElData = null;
       }
     });
-  }, [imageData.favElData, allImage]);
-  console.log("allImage@@!!", allImage);
-  // useEffect(() => {
-  //   console.log("imageData111!", imageData);
-  //   allImage?.filter((element, index) => {
-  //     if (element?.id === imageData.unFavData?.id) {
-  //       console.log('element.id!!@@', allImage[index].favourite)
-  //       allImage[index].favourite = undefined;
-  //     }
-  //   });
-  // }, [imageData.unFavData,allImage]);
+  }, [imageData, imageData.favElData]);
 
+  useEffect(() => {
+    allImage?.filter((element, index) => {
+      if (element?.id === imageData.likeElData?.id) {
+        allImage[index].like = imageData.likeData;
+        imageData.likeData=null
+        imageData.likeElData=null
+      }
+    });
+  }, [imageData.likeElData, allImage]);
+  // useEffect(() => {
+  //   if(imageData.uploadData!==null){
+  //     console.log('imageData.uploadData', imageData.uploadData)
+  //     allImage.push(imageData.uploadData)
+  //     setAllImage(allImage)
+  //   }
+  // }, [imageData.uploadData,allImage])
+  
   const handleChange = (value) => {
     setDropDown(value);
     setFilterTxt("");
-    console.log("filterTxt", filterTxt);
   };
 
   const onSearch = (e) => {
